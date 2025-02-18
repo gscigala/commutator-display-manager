@@ -13,10 +13,11 @@ public:
 
 	virtual std::string getName() const = 0;
 
-	void printDisplayArray() const;
+	void generateDebugImage() const;
+	int loadImage(std::string imagePath, Display::Color** const array, int rows, int cols) const;
 
 protected:
-	char displayArray[Display::WIDGET_ROWS][Display::WIDGET_COLS];
+	Display::Color displayArray[Display::WIDGET_ROWS][Display::WIDGET_COLS];
 };
 
 #endif // WIDGET_H
