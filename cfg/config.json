@@ -1,0 +1,25 @@
+{
+    "widgets": {
+        "TOP_LEFT": {
+            "type": "Sytadin"
+        },
+        "TOP_RIGHT": {
+            "type": "Vigicrues",
+            "capability": "WATER_LEVEL",
+            "thresholds": {
+                "alert": 4.0,
+                "blocking": 4.75
+            }
+        },
+        "BOTTOM_LEFT": {
+            "type": "IdfmLineReports",
+            "transportMode": "RAPID_TRANSIT",
+            "line": "C"
+        },
+        "BOTTOM_RIGHT": {
+            "type": "IdfmLineReports",
+            "transportMode": "LOCAL_TRAIN",
+            "line": "N"
+        }
+    }
+}

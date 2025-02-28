@@ -3,7 +3,7 @@ project('commutator-display-manager', ['c','cpp'], default_options : ['c_std=c17
 boost_dep = dependency('boost', modules : ['log', 'program_options', 'system'])
 sdbus_cpp_dep = dependency('sdbus-c++', version : '>= 0.6.0')
 pugixml_dep = dependency('pugixml', version : '>= 1.0')
-opencv_dep = dependency('opencv', version : '>= 4.0.0')
+opencv_dep = dependency('opencv4', version : '>= 4.0.0')
 
 include_dirs = include_directories(
     'lib/e-Paper/RaspberryPi_JetsonNano/c/lib/Config',

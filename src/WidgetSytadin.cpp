@@ -10,9 +10,9 @@ WidgetSytadin::WidgetSytadin(std::shared_ptr<CommutatorSytadin> commutator):
 	m_commutator(commutator),
 	m_trafficValueThreshold(5),
 	m_displayLine1RowsNb(35),
-	m_displayLine1OffsetY(2)
+	m_displayLine1OffsetY(6)
 {
-	int cols = 80;
+	int cols;
 	
 	m_trafficLevel = m_commutator->getTrafficLevel();
 	m_trafficTendency = m_commutator->getTrafficTendency();
@@ -21,6 +21,7 @@ WidgetSytadin::WidgetSytadin(std::shared_ptr<CommutatorSytadin> commutator):
 
 	m_commutator->newData.connect(boost::bind(&WidgetSytadin::newDataSlot, this));
 
+	cols = 80;
 	m_carImage = new Display::Color*[m_displayLine1RowsNb];
 	for (int i = 0; i < m_displayLine1RowsNb; ++i) {
 	        m_carImage[i] = new Display::Color[cols];
@@ -57,6 +58,8 @@ WidgetSytadin::WidgetSytadin(std::shared_ptr<CommutatorSytadin> commutator):
 
 WidgetSytadin::~WidgetSytadin()
 {
+	BOOST_LOG_TRIVIAL(trace) << getName() << ": destructor!";
+
 	for (int i = 0; i < m_displayLine1RowsNb; ++i) {
 		delete[] m_carImage[i];
 	}
@@ -99,34 +102,37 @@ void WidgetSytadin::newDataSlot()
 		update = true;
 
 	if (update) {
-		BOOST_LOG_TRIVIAL(trace) << "WidgetSytadin: need update widget";
+		BOOST_LOG_TRIVIAL(debug) << "WidgetSytadin: need update widget";
 
 		m_trafficLevel = tmpTrafficLevel;
 		m_trafficTendency = tmpTrafficTendency;
 		m_trafficValue = tmpTrafficValue;
 
 		redraw();
+	} else {
+		BOOST_LOG_TRIVIAL(debug) << "WidgetSytadin: display update not needed";
 	}
 }
 
 void WidgetSytadin::redraw()
 {
 	Display::Color textColor, backgroundColor;
-	const int xCarOffset = 5;
-	const int xArrowOffset = 85;
-	const int xTrafficOffset1Digit = 32;
-	const int xTrafficOffset2Digit = 22;
-	const int xTrafficOffset3Digit = 12;
-	const int yTrafficOffset = 40;
+	Display::Color** arrowImage;
+	const int xCarOffset = 12;
+	const int xArrowOffset = 92;
+	const int xTrafficOffset1Digit = 39;
+	const int xTrafficOffset2Digit = 29;
+	const int xTrafficOffset3Digit = 19;
+	const int yTrafficOffset = 47;
 	int xTrafficOffset;
 	std::string trafficValueStr;
-	Display::Color** arrowImage;
+	int cols;
 
 	if (m_trafficLevel == "Unusual") {
 		textColor = Display::Color::RED;
 		backgroundColor = Display::Color::WHITE;
 	} else if (m_trafficLevel == "Exceptional") {
-		textColor = Display::Color::BLACK;
+		textColor = Display::Color::WHITE;
 		backgroundColor = Display::Color::RED;
 	} else {
 		textColor = Display::Color::BLACK;
@@ -143,15 +149,17 @@ void WidgetSytadin::redraw()
 	/* redraw background */
 	for (int i = 0; i < Display::WIDGET_ROWS; ++i) {
 		for (int j = 0; j < Display::WIDGET_COLS; ++j) {
-			displayArray[i][j] = backgroundColor;
+			m_displayArray[i][j] = backgroundColor;
 		}
 	}
 
 	/* redraw car image */
-	Display::drawImage(xCarOffset, m_displayLine1OffsetY, m_carImage, m_displayLine1RowsNb, 80, textColor, backgroundColor, displayArray);
+	cols = 80;
+	Display::drawImage(xCarOffset, m_displayLine1OffsetY, m_carImage, m_displayLine1RowsNb, cols, textColor, backgroundColor, m_displayArray);
 
 	/* redraw arrow */
-	Display::drawImage(xArrowOffset, m_displayLine1OffsetY, arrowImage, m_displayLine1RowsNb, 35, textColor, backgroundColor, displayArray);
+	cols = 35;
+	Display::drawImage(xArrowOffset, m_displayLine1OffsetY, arrowImage, m_displayLine1RowsNb, cols, textColor, backgroundColor, m_displayArray);
 
 	/* redraw traffic value */
 	trafficValueStr = std::to_string(m_trafficValue) + " km";
@@ -161,7 +169,21 @@ void WidgetSytadin::redraw()
 		xTrafficOffset = xTrafficOffset2Digit;
 	else
 		xTrafficOffset = xTrafficOffset3Digit;
-	Display::drawString(xTrafficOffset, yTrafficOffset, trafficValueStr, &Font24, textColor, backgroundColor, displayArray);
+	Display::drawString(xTrafficOffset, yTrafficOffset, trafficValueStr, &Font24, textColor, backgroundColor, m_displayArray);
 
+	/* redraw debug border */
+	/*for (int i = 0; i < Display::WIDGET_ROWS; ++i) {
+		for (int j = 0; j < Display::WIDGET_COLS; ++j) {
+			if ((j == 0) || (j == Display::WIDGET_COLS-1)) {
+				m_displayArray[i][j] = Display::Color::YELLOW;	
+			}
+			if ((i == 0) || i == (Display::WIDGET_ROWS-1)) {
+				m_displayArray[i][j] = Display::Color::YELLOW;
+			}
+		}
+		}*/
+	
 	generateDebugImage();
+
+	newData();
 }

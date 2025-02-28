@@ -7,11 +7,24 @@
 
 Widget::Widget()
 {
+	m_displayArray = new Display::Color*[Display::WIDGET_ROWS];
+	for (int i = 0; i < Display::WIDGET_ROWS; ++i) {
+	        m_displayArray[i] = new Display::Color[Display::WIDGET_COLS];
+	}
+	
 	for (int i = 0; i < Display::WIDGET_ROWS; ++i) {
 		for (int j = 0; j < Display::WIDGET_COLS; ++j) {
-			displayArray[i][j] = Display::Color::WHITE;
+			m_displayArray[i][j] = Display::Color::WHITE;
 		}
 	}
+}
+
+Widget::~Widget()
+{
+	for (int i = 0; i < Display::WIDGET_ROWS; ++i) {
+		delete[] m_displayArray[i];
+	}
+	delete[] m_displayArray;
 }
 
 void Widget::generateDebugImage() const {
@@ -20,19 +33,19 @@ void Widget::generateDebugImage() const {
 	for (int i = 0; i < Display::WIDGET_ROWS; ++i) {
 		for (int j = 0; j < Display::WIDGET_COLS; ++j) {
 			cv::Scalar color;
-			switch (displayArray[i][j]) {
+			switch (m_displayArray[i][j]) {
 			case Display::Color::BLACK:
-				color = cv::Scalar(0, 0, 0);
+				color = cv::Scalar(3, 11, 18);
 				break;
 			case Display::Color::RED:
-				color = cv::Scalar(0, 0, 255);
+				color = cv::Scalar(11, 25, 161);
 				break;
 			case Display::Color::YELLOW:
-				color = cv::Scalar(0, 255, 255);
+				color = cv::Scalar(14, 180, 255);
 				break;
 			case Display::Color::WHITE:
 			default:
-				color = cv::Scalar(255, 255, 255);
+				color = cv::Scalar(208, 203, 203);
 				break;
 			}
 			image.at<cv::Vec3b>(i, j) = cv::Vec3b(color[0], color[1], color[2]);

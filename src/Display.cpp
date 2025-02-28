@@ -3,7 +3,23 @@
 #include <boost/log/trivial.hpp>
 
 namespace Display {
-	void drawChar(uint16_t x, uint16_t y, char ascii_char, sFONT* font, Display::Color textColor, Display::Color backgroundColor, Display::Color displayArray[Display::WIDGET_ROWS][Display::WIDGET_COLS])
+
+	std::string positionToString(WidgetPosition position) {
+		switch (position) {
+		case WidgetPosition::TOP_LEFT:
+			return "TOP_LEFT";
+		case WidgetPosition::TOP_RIGHT:
+			return "TOP_RIGHT";
+		case WidgetPosition::BOTTOM_LEFT:
+			return "BOTTOM_LEFT";
+		case WidgetPosition::BOTTOM_RIGHT:
+			return "BOTTOM_RIGHT";
+		default:
+			return "UNKNOWN";
+		}
+	}
+	
+	void drawChar(uint16_t x, uint16_t y, char ascii_char, sFONT* font, Display::Color textColor, Display::Color backgroundColor, Display::Color** displayArray)
 	{
 		uint32_t char_offset = (ascii_char - ' ') * font->Height * (font->Width / 8 + (font->Width % 8 ? 1 : 0));
 		const unsigned char *ptr = &font->table[char_offset];
@@ -32,7 +48,7 @@ namespace Display {
 		}
 	}
 
-	void drawString(uint16_t x, uint16_t y, std::string str, sFONT* font, Display::Color textColor, Display::Color backgroundColor, Display::Color displayArray[Display::WIDGET_ROWS][Display::WIDGET_COLS])
+	void drawString(uint16_t x, uint16_t y, std::string str, sFONT* font, Display::Color textColor, Display::Color backgroundColor, Display::Color** displayArray)
 	{
 		const char* pString = str.c_str();
 		
@@ -50,7 +66,7 @@ namespace Display {
 		}
 	}
 
-	void drawImage(uint16_t x, uint16_t y,  Display::Color **image, int rows, int cols, Display::Color textColor, Display::Color backgroundColor, Display::Color displayArray[Display::WIDGET_ROWS][Display::WIDGET_COLS])
+	void drawImage(uint16_t x, uint16_t y,  Display::Color** image, int rows, int cols, Display::Color textColor, Display::Color backgroundColor, Display::Color** displayArray)
 	{
 		if (y > Display::WIDGET_ROWS || x > Display::WIDGET_COLS) {
 			BOOST_LOG_TRIVIAL(trace) << "input (" << x << "," << y << " exceeds the normal display range";

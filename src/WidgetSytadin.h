@@ -1,8 +1,8 @@
 #ifndef WIDGETSYTADIN_H
 #define WIDGETSYTADIN_H
 
-#include "CommutatorSytadin.h"
 #include "Widget.h"
+#include "CommutatorSytadin.h"
 
 #include <memory>
 #include <string>
