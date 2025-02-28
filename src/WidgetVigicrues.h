@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <string>
+#include <cmath>
 
 class WidgetVigicrues: public Widget {
 public:
@@ -36,6 +37,10 @@ private:
 	void newDataSlot();
 	void redraw();
 	std::string capabilityToString(Capability capability) const;
+
+	bool areEqual(double a, double b) const {
+		return std::fabs(a - b) < 1e-9;
+	}
 
 	const std::shared_ptr<CommutatorVigicrues> m_commutator;
 

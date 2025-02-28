@@ -142,9 +142,10 @@ void WidgetVigicrues::newDataSlot() {
 	}
 	else {
 		BOOST_LOG_TRIVIAL(error) << getName() << ": Unknown capability!";
+		return;
 	}
 
-	if ((m_value != tmpValue) || (m_tendency != tmpTendency)) {
+	if (!areEqual(m_value, tmpValue) || (m_tendency != tmpTendency)) {
 		BOOST_LOG_TRIVIAL(trace) << getName() << ": need update widget";
 
 		m_tendency = tmpTendency;
