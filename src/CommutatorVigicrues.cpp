@@ -34,19 +34,21 @@ void CommutatorVigicrues::onPropertiesChanged(sdbus::Signal& signal)
 }
 
 CommutatorVigicrues::CommutatorVigicrues():
-	Commutator("Vigicrues") {
-	const char* destinationName = "com.commutator.Vigicrues";
-	const char* objectPath = "/com/commutator/Vigicrues";
-	m_proxy = sdbus::createProxy(destinationName, objectPath);
+	Commutator("Vigicrues")
+{
+	sdbus::ServiceName destination{"com.commutator.Vigicrues"};
+	sdbus::ObjectPath objectPath{"/com/commutator/Vigicrues"};
+	m_proxy = sdbus::createProxy(std::move(destination), std::move(objectPath));
 
-	const char* interfaceName = "org.freedesktop.DBus.Properties";
-	m_proxy->registerSignalHandler(interfaceName, "PropertiesChanged",
-				       [this](sdbus::Signal& signal) {
+	sdbus::InterfaceName interfaceName{"org.freedesktop.DBus.Properties"};
+	sdbus::SignalName signalName{"PropertiesChanged"};
+	m_proxy->registerSignalHandler(interfaceName, signalName,
+				       [this](sdbus::Signal signal) {
 					       this->onPropertiesChanged(signal);
 				       });
-	m_proxy->finishRegistration();
 
-	auto method = m_proxy->createMethodCall(interfaceName, "GetAll");
+	sdbus::MethodName getAll{"GetAll"};
+	auto method = m_proxy->createMethodCall(interfaceName, getAll);
 	method << "";
 	try {
 		auto reply = m_proxy->callMethod(method);

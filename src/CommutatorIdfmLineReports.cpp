@@ -79,12 +79,16 @@ void CommutatorIdfmLineReports::onPropertiesChanged(sdbus::Signal& signal)
 }
 
 CommutatorIdfmLineReports::CommutatorIdfmLineReports():
-	Commutator("IdfmLineReports") {
-	const char* destinationName = "com.commutator.IdfmLineReports";
-	const char* objectPath = "/com/commutator/IdfmLineReports";
-	std::unique_ptr<sdbus::IProxy> proxy = sdbus::createProxy(destinationName, objectPath);
+	Commutator("IdfmLineReports")
+{
+	sdbus::ServiceName destination{"com.commutator.IdfmLineReports"};
+	sdbus::ObjectPath objectPath{"/com/commutator/IdfmLineReports"};
+	std::unique_ptr<sdbus::IProxy> proxy = sdbus::createProxy(std::move(destination), std::move(objectPath));
 
-	auto method = proxy->createMethodCall("org.freedesktop.DBus.Introspectable", "Introspect");
+
+	sdbus::InterfaceName introspectable{"org.freedesktop.DBus.Introspectable"};
+	sdbus::MethodName introspect{"Introspect"};
+	auto method = proxy->createMethodCall(introspectable, introspect);
 	auto reply = proxy->callMethod(method);
 	std::string introspectionData;
 	reply >> introspectionData;
@@ -99,20 +103,22 @@ CommutatorIdfmLineReports::CommutatorIdfmLineReports():
 
 	for (pugi::xml_node node = doc.child("node").child("node"); node; node = node.next_sibling("node")) {
 		const std::string lineName = node.attribute("name").as_string();
-		const std::string destinationName = "com.commutator.IdfmLineReports";
-		const std::string objectPath = "/com/commutator/IdfmLineReports/" + lineName;
 
-		auto proxy = sdbus::createProxy(destinationName, objectPath);
+		sdbus::ServiceName destination{"com.commutator.IdfmLineReports"};
+		sdbus::ObjectPath objectPath{"/com/commutator/IdfmLineReports/" + lineName};
+		
+		auto proxy = sdbus::createProxy(std::move(destination), std::move(objectPath));
 
-		const char* interfaceName = "org.freedesktop.DBus.Properties";
+		sdbus::InterfaceName interfaceName{"org.freedesktop.DBus.Properties"};
+		sdbus::SignalName signalName{"PropertiesChanged"};
 
-		proxy->registerSignalHandler(interfaceName, "PropertiesChanged",
-						   [this](sdbus::Signal& signal) {
+		proxy->registerSignalHandler(interfaceName, signalName,
+						   [this](sdbus::Signal signal) {
 							   this->onPropertiesChanged(signal);
 						   });
-		proxy->finishRegistration();
 
-		auto method = proxy->createMethodCall(interfaceName, "GetAll");
+		sdbus::MethodName getAll{"GetAll"};
+		auto method = proxy->createMethodCall(interfaceName, getAll);
 		method << "";
 		try {
 			auto reply = proxy->callMethod(method);
