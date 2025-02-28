@@ -33,7 +33,9 @@ executable('commutator-display-manager',
            src_files,
            dependencies: [boost_dep, sdbus_cpp_dep, pugixml_dep, opencv_dep, nlohmann_json_dep],
            include_directories: include_dirs,
-           cpp_args : ['-Werror','-Wno-deprecated-enum-enum-conversion']
+           cpp_args : ['-Werror','-Wno-deprecated-enum-enum-conversion'],
+           install: true,
+           install_dir: '/usr/bin'
 )
 
 install_data('cfg/config.json',
