@@ -31,5 +31,6 @@ src_files = files('src/main.cpp',
 executable('commutator-display-manager',
            src_files,
            dependencies: [boost_dep, sdbus_cpp_dep, pugixml_dep, opencv_dep],
-           include_directories: include_dirs)
+           include_directories: include_dirs,
+           cpp_args : ['-Werror','-Wno-deprecated-enum-enum-conversion'])
 
