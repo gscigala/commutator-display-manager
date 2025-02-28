@@ -40,3 +40,7 @@ install_data('cfg/config.json',
              install_dir: '/etc/commutator-display-manager',
              rename: 'config.json'
 )
+
+install_data('res/*.png',
+             install_dir: '/etc/commutator-display-manager/res'
+)
