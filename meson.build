@@ -27,11 +27,16 @@ src_files = files('src/main.cpp',
                   'lib/e-Paper/RaspberryPi_JetsonNano/c/lib/Config/DEV_Config.c',
                   'lib/e-Paper/RaspberryPi_JetsonNano/c/lib/e-Paper/EPD_2in15g.c',
                   'lib/e-Paper/RaspberryPi_JetsonNano/c/lib/Fonts/font24.c',
-                  )
+)
 
 executable('commutator-display-manager',
            src_files,
            dependencies: [boost_dep, sdbus_cpp_dep, pugixml_dep, opencv_dep, nlohmann_json_dep],
            include_directories: include_dirs,
-           cpp_args : ['-Werror','-Wno-deprecated-enum-enum-conversion'])
+           cpp_args : ['-Werror','-Wno-deprecated-enum-enum-conversion']
+)
 
+install_data('cfg/config.json',
+             install_dir: '/etc/commutator-display-manager',
+             rename: 'config.json'
+)
