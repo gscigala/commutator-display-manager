@@ -70,7 +70,7 @@ CommutatorSytadin::CommutatorSytadin():
 		}
 	}
 	catch(const sdbus::Error& e) {
-		BOOST_LOG_TRIVIAL(error) << "CommutatorSytadin: " << "Got  error " << e.getName() << " with message " << e.getMessage();
+		BOOST_LOG_TRIVIAL(error) << "CommutatorSytadin: " << "Got error " << e.getName() << " with message " << e.getMessage();
 	}
 
 	BOOST_LOG_TRIVIAL(info) << "CommutatorSytadin: " << "CommutatorSytadin created.";

@@ -77,7 +77,7 @@ CommutatorVigicrues::CommutatorVigicrues():
 		}
 	}
 	catch(const sdbus::Error& e) {
-		BOOST_LOG_TRIVIAL(error) << "CommutatorVigicrues: " << "Got  error " << e.getName() << " with message " << e.getMessage();
+		BOOST_LOG_TRIVIAL(error) << "CommutatorVigicrues: " << "Got error " << e.getName() << " with message " << e.getMessage();
 	}
 
 	BOOST_LOG_TRIVIAL(info) << "CommutatorVigicrues created.";

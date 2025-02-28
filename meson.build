@@ -41,6 +41,12 @@ install_data('cfg/config.json',
              rename: 'config.json'
 )
 
-install_data('res/*.png',
-             install_dir: '/etc/commutator-display-manager/res'
+png_files = files(
+  'res/arrow-bottom.png',
+  'res/arrow-bottom-right.png'
+  #WIP
 )
+
+foreach png_file : png_files
+  install_data(png_file, install_dir: '/etc/commutator-display-manager/res')
+endforeach
