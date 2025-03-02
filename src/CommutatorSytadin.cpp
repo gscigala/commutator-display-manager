@@ -32,14 +32,6 @@ void CommutatorSytadin::onPropertiesChanged(sdbus::Signal signal)
 	}
 }
 
-void onConcatenated(sdbus::Signal signal)
-{
-    std::string concatenatedString;
-    signal >> concatenatedString;
-
-    std::cout << "Received signal with concatenated string " << concatenatedString << std::endl;
-}
-
 CommutatorSytadin::CommutatorSytadin():
 	Commutator("Sytadin")
 {
