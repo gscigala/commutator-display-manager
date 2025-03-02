@@ -6,7 +6,7 @@
 #include <sstream>
 #include <iomanip>
 
-WidgetVigicrues::WidgetVigicrues(std::shared_ptr<CommutatorVigicrues> commutator, Capability capability, float alertThreshold, float blockingThreshold):
+WidgetVigicrues::WidgetVigicrues(std::shared_ptr<CommutatorVigicrues> commutator, std::string resDirPath, Capability capability, float alertThreshold, float blockingThreshold):
 	Widget(),
 	m_commutator(commutator),
 	m_alertThreshold(alertThreshold),
@@ -44,7 +44,7 @@ WidgetVigicrues::WidgetVigicrues(std::shared_ptr<CommutatorVigicrues> commutator
 	for (int i = 0; i < m_displayLine1RowsNb; ++i) {
 	        m_waveImage[i] = new Display::Color[cols];
 	}
-	if (loadImage("res/wave.png", m_waveImage, m_displayLine1RowsNb, cols) < 0)
+	if (loadImage(resDirPath + "/wave.png", m_waveImage, m_displayLine1RowsNb, cols) < 0)
 		throw std::runtime_error("Unable to load wave.png");
 
 	if (m_capability == Capability::FLOW) {
@@ -53,7 +53,7 @@ WidgetVigicrues::WidgetVigicrues(std::shared_ptr<CommutatorVigicrues> commutator
 		for (int i = 0; i < m_displayLine1RowsNb; ++i) {
 			m_symbolImage[i] = new Display::Color[cols];
 		}
-		if (loadImage("res/water-flow-symbol.png", m_symbolImage, m_displayLine1RowsNb, cols) < 0)
+		if (loadImage(resDirPath + "/water-flow-symbol.png", m_symbolImage, m_displayLine1RowsNb, cols) < 0)
 			throw std::runtime_error("Unable to load water-flow-symbol.png");
 
 	} else if (m_capability == Capability::WATER_LEVEL) {
@@ -62,7 +62,7 @@ WidgetVigicrues::WidgetVigicrues(std::shared_ptr<CommutatorVigicrues> commutator
 		for (int i = 0; i < m_displayLine1RowsNb; ++i) {
 			m_symbolImage[i] = new Display::Color[cols];
 		}
-		if (loadImage("res/water-level-symbol.png", m_symbolImage, m_displayLine1RowsNb, cols) < 0)
+		if (loadImage(resDirPath + "/water-level-symbol.png", m_symbolImage, m_displayLine1RowsNb, cols) < 0)
 			throw std::runtime_error("Unable to load water-level-symbol.png");
 		
 	} else {
@@ -74,7 +74,7 @@ WidgetVigicrues::WidgetVigicrues(std::shared_ptr<CommutatorVigicrues> commutator
 	for (int i = 0; i < m_displayLine1RowsNb; ++i) {
 	        m_arrowTopRightImage[i] = new Display::Color[cols];
 	}
-	if (loadImage("res/arrow-top-right.png", m_arrowTopRightImage, m_displayLine1RowsNb, cols) < 0)
+	if (loadImage(resDirPath + "/arrow-top-right.png", m_arrowTopRightImage, m_displayLine1RowsNb, cols) < 0)
 		throw std::runtime_error("Unable to load arrow-top-right.png");
 
 	cols = 35;
@@ -82,7 +82,7 @@ WidgetVigicrues::WidgetVigicrues(std::shared_ptr<CommutatorVigicrues> commutator
 	for (int i = 0; i < m_displayLine1RowsNb; ++i) {
 	        m_arrowRightImage[i] = new Display::Color[cols];
 	}
-	if (loadImage("res/arrow-right.png", m_arrowRightImage, m_displayLine1RowsNb, cols) < 0)
+	if (loadImage(resDirPath + "/arrow-right.png", m_arrowRightImage, m_displayLine1RowsNb, cols) < 0)
 		throw std::runtime_error("Unable to load arrow-right.png");
 
 	cols = 35;
@@ -90,7 +90,7 @@ WidgetVigicrues::WidgetVigicrues(std::shared_ptr<CommutatorVigicrues> commutator
 	for (int i = 0; i < m_displayLine1RowsNb; ++i) {
 	        m_arrowBottomRightImage[i] = new Display::Color[cols];
 	}
-	if (loadImage("res/arrow-bottom-right.png", m_arrowBottomRightImage, m_displayLine1RowsNb, cols) < 0)
+	if (loadImage(resDirPath + "/arrow-bottom-right.png", m_arrowBottomRightImage, m_displayLine1RowsNb, cols) < 0)
 		throw std::runtime_error("Unable to load arrow-bottom-right.png");
 
 	redraw();

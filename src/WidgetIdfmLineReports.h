@@ -10,7 +10,7 @@
 
 class WidgetIdfmLineReports: public Widget {
 public:
-	WidgetIdfmLineReports(std::shared_ptr<CommutatorIdfmLineReports> commutator, IdfmTransportMode mode, std::string name);
+	WidgetIdfmLineReports(std::shared_ptr<CommutatorIdfmLineReports> commutator, std::string resDirPath,  IdfmTransportMode mode, std::string name);
 	~WidgetIdfmLineReports();
 
 	std::string getName() const {

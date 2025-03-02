@@ -5,7 +5,7 @@
 #include <boost/signals2.hpp>
 #include <boost/log/trivial.hpp>
 
-WidgetSytadin::WidgetSytadin(std::shared_ptr<CommutatorSytadin> commutator):
+WidgetSytadin::WidgetSytadin(std::shared_ptr<CommutatorSytadin> commutator, std::string resDirPath):
 	Widget(),
 	m_commutator(commutator),
 	m_trafficValueThreshold(5),
@@ -26,7 +26,7 @@ WidgetSytadin::WidgetSytadin(std::shared_ptr<CommutatorSytadin> commutator):
 	for (int i = 0; i < m_displayLine1RowsNb; ++i) {
 	        m_carImage[i] = new Display::Color[cols];
 	}
-	if (loadImage("res/car.png", m_carImage, m_displayLine1RowsNb, cols) < 0)
+	if (loadImage(resDirPath + "/car.png", m_carImage, m_displayLine1RowsNb, cols) < 0)
 		throw std::runtime_error("Unable to load car.png");
 
 	cols = 35;
@@ -34,7 +34,7 @@ WidgetSytadin::WidgetSytadin(std::shared_ptr<CommutatorSytadin> commutator):
 	for (int i = 0; i < m_displayLine1RowsNb; ++i) {
 	        m_arrowTopRightImage[i] = new Display::Color[cols];
 	}
-	if (loadImage("res/arrow-top-right.png", m_arrowTopRightImage, m_displayLine1RowsNb, cols) < 0)
+	if (loadImage(resDirPath + "/arrow-top-right.png", m_arrowTopRightImage, m_displayLine1RowsNb, cols) < 0)
 		throw std::runtime_error("Unable to load arrow-top-right.png");
 
 	cols = 35;
@@ -42,7 +42,7 @@ WidgetSytadin::WidgetSytadin(std::shared_ptr<CommutatorSytadin> commutator):
 	for (int i = 0; i < m_displayLine1RowsNb; ++i) {
 	        m_arrowRightImage[i] = new Display::Color[cols];
 	}
-	if (loadImage("res/arrow-right.png", m_arrowRightImage, m_displayLine1RowsNb, cols) < 0)
+	if (loadImage(resDirPath + "/arrow-right.png", m_arrowRightImage, m_displayLine1RowsNb, cols) < 0)
 		throw std::runtime_error("Unable to load arrow-right.png");
 
 	cols = 35;
@@ -50,7 +50,7 @@ WidgetSytadin::WidgetSytadin(std::shared_ptr<CommutatorSytadin> commutator):
 	for (int i = 0; i < m_displayLine1RowsNb; ++i) {
 	        m_arrowBottomRightImage[i] = new Display::Color[cols];
 	}
-	if (loadImage("res/arrow-bottom-right.png", m_arrowBottomRightImage, m_displayLine1RowsNb, cols) < 0)
+	if (loadImage(resDirPath + "/arrow-bottom-right.png", m_arrowBottomRightImage, m_displayLine1RowsNb, cols) < 0)
 		throw std::runtime_error("Unable to load arrow-bottom-right.png");
 
 	redraw();

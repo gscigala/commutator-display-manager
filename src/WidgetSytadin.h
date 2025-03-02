@@ -9,7 +9,7 @@
 
 class WidgetSytadin: public Widget {
 public:
-	WidgetSytadin(std::shared_ptr<CommutatorSytadin> commutator);
+	WidgetSytadin(std::shared_ptr<CommutatorSytadin> commutator, std::string resDirPath);
 	~WidgetSytadin();
 
 	std::string getName() const {

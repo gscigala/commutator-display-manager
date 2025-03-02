@@ -29,7 +29,7 @@ void signalHandler(int signum) {
     running = false;
 }
 
-std::shared_ptr<Widget> createWidget(const json config, Display::WidgetPosition position, std::shared_ptr<CommutatorSytadin> commutatorSytadin, std::shared_ptr<CommutatorVigicrues> commutatorVigicrues, std::shared_ptr<CommutatorIdfmLineReports> commutatorIdfmLineReports)
+std::shared_ptr<Widget> createWidget(const json config, const std::string resDirPath,  Display::WidgetPosition position, std::shared_ptr<CommutatorSytadin> commutatorSytadin, std::shared_ptr<CommutatorVigicrues> commutatorVigicrues, std::shared_ptr<CommutatorIdfmLineReports> commutatorIdfmLineReports)
 {
 	std::string positionStr = Display::positionToString(position);
 
@@ -52,16 +52,16 @@ std::shared_ptr<Widget> createWidget(const json config, Display::WidgetPosition 
 
 	std::string widgetType = widgetConfig["type"];
 	if (widgetType == "Sytadin") {
-		return std::make_shared<WidgetSytadin>(commutatorSytadin);
+		return std::make_shared<WidgetSytadin>(commutatorSytadin, resDirPath);
 	} else if (widgetType == "Vigicrues") {
 		std::string capability = widgetConfig["capability"];
 		float alert = widgetConfig["thresholds"]["alert"];
 		float blocking = widgetConfig["thresholds"]["blocking"];
-		return std::make_shared<WidgetVigicrues>(commutatorVigicrues, WidgetVigicrues::stringToCapability(capability), alert, blocking);
+		return std::make_shared<WidgetVigicrues>(commutatorVigicrues, resDirPath,  WidgetVigicrues::stringToCapability(capability), alert, blocking);
 	} else if (widgetType == "IdfmLineReports") {
 		std::string transportMode = widgetConfig["transportMode"];
 		std::string line = widgetConfig["line"];
-		return std::make_shared<WidgetIdfmLineReports>(commutatorIdfmLineReports, WidgetIdfmLineReports::stringToTransportMode(transportMode), line);
+		return std::make_shared<WidgetIdfmLineReports>(commutatorIdfmLineReports, resDirPath, WidgetIdfmLineReports::stringToTransportMode(transportMode), line);
 	} else {
 		throw std::runtime_error("Error : Unknown type '" + widgetType + "' in widget '" + positionStr + "'.");
 	}
@@ -83,7 +83,8 @@ int main(int argc, char* argv[])
 	po::options_description desc("Options");
 	desc.add_options()
 		("help,h", "Print help messages")
-		("config,c", po::value<std::string>(), "Configuration file path");
+		("config,c", po::value<std::string>(), "Configuration file path")
+		("ressources,r", po::value<std::string>(), "Ressources directory path");
 
 	po::variables_map vm;
 	po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -100,7 +101,7 @@ int main(int argc, char* argv[])
 	}
 
 	std::ifstream configFile(configPath);
-	BOOST_LOG_TRIVIAL(trace) << "Configuration file = " << configPath;
+	BOOST_LOG_TRIVIAL(debug) << "Configuration file = " << configPath;
 
 	if (!configFile.is_open()) {
 		BOOST_LOG_TRIVIAL(error) << "Unable to open configuration file " << configPath;
@@ -115,16 +116,22 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	std::string resDirPath = "/etc/commutator-display-manager/ressources";
+	if (vm.count("ressources")) {
+		resDirPath = vm["ressources"].as<std::string>();
+	}
+	BOOST_LOG_TRIVIAL(debug) << "Ressources directory path = " << resDirPath;
+
 	std::shared_ptr<Widget> widgetTopLeft;
 	std::shared_ptr<Widget> widgetTopRight;
 	std::shared_ptr<Widget> widgetBottomLeft;
 	std::shared_ptr<Widget> widgetBottomRight;
 
 	try {
-		widgetTopLeft = createWidget(config, Display::WidgetPosition::TOP_LEFT, commutatorSytadin, commutatorVigicrues, commutatorIdfmLineReports);
-		widgetTopRight = createWidget(config, Display::WidgetPosition::TOP_RIGHT, commutatorSytadin, commutatorVigicrues, commutatorIdfmLineReports);
-		widgetBottomLeft = createWidget(config, Display::WidgetPosition::BOTTOM_LEFT, commutatorSytadin, commutatorVigicrues, commutatorIdfmLineReports);
-		widgetBottomRight = createWidget(config, Display::WidgetPosition::BOTTOM_RIGHT, commutatorSytadin, commutatorVigicrues, commutatorIdfmLineReports);
+		widgetTopLeft = createWidget(config, resDirPath, Display::WidgetPosition::TOP_LEFT, commutatorSytadin, commutatorVigicrues, commutatorIdfmLineReports);
+		widgetTopRight = createWidget(config, resDirPath,  Display::WidgetPosition::TOP_RIGHT, commutatorSytadin, commutatorVigicrues, commutatorIdfmLineReports);
+		widgetBottomLeft = createWidget(config, resDirPath,  Display::WidgetPosition::BOTTOM_LEFT, commutatorSytadin, commutatorVigicrues, commutatorIdfmLineReports);
+		widgetBottomRight = createWidget(config, resDirPath, Display::WidgetPosition::BOTTOM_RIGHT, commutatorSytadin, commutatorVigicrues, commutatorIdfmLineReports);
 	} catch (const std::invalid_argument& e) {
 		std::cerr << "Error: " << e.what() << std::endl;
 		return -1;

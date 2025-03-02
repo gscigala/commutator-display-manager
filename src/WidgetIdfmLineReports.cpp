@@ -3,7 +3,7 @@
 #include <boost/signals2.hpp>
 #include <boost/log/trivial.hpp>
 
-WidgetIdfmLineReports::WidgetIdfmLineReports(std::shared_ptr<CommutatorIdfmLineReports> commutator, IdfmTransportMode mode, std::string name):
+WidgetIdfmLineReports::WidgetIdfmLineReports(std::shared_ptr<CommutatorIdfmLineReports> commutator, std::string resDirPath, IdfmTransportMode mode, std::string name):
 	Widget(),
 	m_commutator(commutator),
 	m_displayLineRowsNb(45),
@@ -26,30 +26,30 @@ WidgetIdfmLineReports::WidgetIdfmLineReports(std::shared_ptr<CommutatorIdfmLineR
 		for (int i = 0; i < m_displayLineRowsNb; ++i) {
 			m_modeImage[i] = new Display::Color[cols];
 		}
-		if (loadImage("res/metro.png", m_modeImage, m_displayLineRowsNb, cols) < 0)
+		if (loadImage(resDirPath + "/metro.png", m_modeImage, m_displayLineRowsNb, cols) < 0)
 			throw std::runtime_error("Unable to load metro.png");
 
-		nameImageStr = "res/metro-" + toLowerCase(m_name) + ".png";
+		nameImageStr = resDirPath + "/metro-" + toLowerCase(m_name) + ".png";
 
 	} else if (m_mode == IdfmTransportMode::RAPID_TRANSIT) {
 		m_modeImage = new Display::Color*[m_displayLineRowsNb];
 		for (int i = 0; i < m_displayLineRowsNb; ++i) {
 			m_modeImage[i] = new Display::Color[cols];
 		}
-		if (loadImage("res/rer.png", m_modeImage, m_displayLineRowsNb, cols) < 0)
+		if (loadImage(resDirPath + "/rer.png", m_modeImage, m_displayLineRowsNb, cols) < 0)
 			throw std::runtime_error("Unable to load rer.png");
 
-		nameImageStr = "res/rer-" + toLowerCase(m_name) + ".png";
+		nameImageStr = resDirPath + "/rer-" + toLowerCase(m_name) + ".png";
 
 	} else if (m_mode == IdfmTransportMode::LOCAL_TRAIN) {
 		m_modeImage = new Display::Color*[m_displayLineRowsNb];
 		for (int i = 0; i < m_displayLineRowsNb; ++i) {
 			m_modeImage[i] = new Display::Color[cols];
 		}
-		if (loadImage("res/transilien.png", m_modeImage, m_displayLineRowsNb, cols) < 0)
+		if (loadImage(resDirPath + "/transilien.png", m_modeImage, m_displayLineRowsNb, cols) < 0)
 			throw std::runtime_error("Unable to load transilien.png");
 
-		nameImageStr = "res/transilien-" + toLowerCase(m_name) + ".png";
+		nameImageStr = resDirPath + "/transilien-" + toLowerCase(m_name) + ".png";
 	} else {
 		throw std::runtime_error("Unknown transport mode!");
 	}
@@ -71,7 +71,7 @@ WidgetIdfmLineReports::WidgetIdfmLineReports(std::shared_ptr<CommutatorIdfmLineR
 	for (int i = 0; i < m_displayLineRowsNb; ++i) {
 		m_trafficWarningImage[i] = new Display::Color[cols];
 	}
-	if (loadImage("res/warning.png", m_trafficWarningImage, m_displayLineRowsNb, cols) < 0)
+	if (loadImage(resDirPath + "/warning.png", m_trafficWarningImage, m_displayLineRowsNb, cols) < 0)
 		throw std::runtime_error(errorStr);
 
 	cols = 42;
@@ -79,7 +79,7 @@ WidgetIdfmLineReports::WidgetIdfmLineReports(std::shared_ptr<CommutatorIdfmLineR
 	for (int i = 0; i < m_displayLineRowsNb; ++i) {
 		m_trafficStoppedImage[i] = new Display::Color[cols];
 	}
-	if (loadImage("res/cross.png", m_trafficStoppedImage, m_displayLineRowsNb, cols) < 0)
+	if (loadImage(resDirPath + "/cross.png", m_trafficStoppedImage, m_displayLineRowsNb, cols) < 0)
 		throw std::runtime_error(errorStr);
 
 	redraw();

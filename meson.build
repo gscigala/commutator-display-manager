@@ -63,5 +63,5 @@ png_files = files(
 )
 
 foreach png_file : png_files
-  install_data(png_file, install_dir: '/etc/commutator-display-manager/res')
+  install_data(png_file, install_dir: '/etc/commutator-display-manager/ressources')
 endforeach
