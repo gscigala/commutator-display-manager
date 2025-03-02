@@ -26,7 +26,7 @@ public:
 	boost::signals2::signal<void()> newData;
 
 private:
-	void onPropertiesChanged(sdbus::Signal& signal);
+	void onPropertiesChanged(sdbus::Signal signal);
 
 	std::shared_ptr<sdbus::IProxy> m_proxy;
 

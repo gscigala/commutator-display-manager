@@ -45,8 +45,21 @@ install_data('cfg/config.json',
 
 png_files = files(
   'res/arrow-bottom.png',
-  'res/arrow-bottom-right.png'
-  #WIP
+  'res/arrow-bottom-right.png',
+  'res/arrow-right.png',
+  'res/arrow-top-right.png',
+  'res/arrow-top.png',
+  'res/cross.png',
+  'res/warning.png',
+  'res/car.png',
+  'res/wave.png',
+  'res/water-flow-symbol.png',
+  'res/water-level-symbol.png',
+  'res/metro.png',
+  'res/rer.png',
+  'res/transilien.png',
+  'res/rer-c.png',
+  'res/transilien-n.png'
 )
 
 foreach png_file : png_files

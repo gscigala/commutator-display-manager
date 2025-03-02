@@ -19,7 +19,7 @@ public:
 private:
         IdfmTransportMode getModeFromString(std::string str);
 	std::string getLineFromString(IdfmTransportMode mode, std::string interfaceName);
-	void onPropertiesChanged(sdbus::Signal& signal);
+	void onPropertiesChanged(sdbus::Signal signal);
 
 	std::map<std::unique_ptr<IdfmLineStatus>,
 		 std::unique_ptr<sdbus::IProxy>> m_linesMap;

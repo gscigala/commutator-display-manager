@@ -40,7 +40,7 @@ std::string CommutatorIdfmLineReports::getLineFromString(IdfmTransportMode mode,
 	return line;
 }
 
-void CommutatorIdfmLineReports::onPropertiesChanged(sdbus::Signal& signal)
+void CommutatorIdfmLineReports::onPropertiesChanged(sdbus::Signal signal)
 {
 	std::string interfaceName;
 	std::map<std::string, sdbus::Variant> changedProperties;

@@ -2,7 +2,7 @@
 
 #include <boost/log/trivial.hpp>
 
-void CommutatorSytadin::onPropertiesChanged(sdbus::Signal& signal)
+void CommutatorSytadin::onPropertiesChanged(sdbus::Signal signal)
 {
 	std::string interfaceName;
 	std::map<std::string, sdbus::Variant> changedProperties;
