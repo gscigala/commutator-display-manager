@@ -32,6 +32,7 @@ public:
 private:
 	void onPropertiesChanged(sdbus::Signal signal);
 
+	std::shared_ptr<sdbus::IConnection> m_connection;
 	std::shared_ptr<sdbus::IProxy> m_proxy;
 
 	std::string m_flowTendency;

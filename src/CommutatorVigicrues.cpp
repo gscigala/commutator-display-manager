@@ -2,44 +2,13 @@
 
 #include <boost/log/trivial.hpp>
 
-void CommutatorVigicrues::onPropertiesChanged(sdbus::Signal signal)
-{
-	std::string interfaceName;
-	std::map<std::string, sdbus::Variant> changedProperties;
-	std::vector<std::string> invalidatedProperties;
-
-	signal >> interfaceName >> changedProperties >> invalidatedProperties;
-
-	if (!changedProperties.empty()) {
-		for (const auto& [propertyName, propertyValue] : changedProperties) {
-			std::string valueStr = propertyValue.get<std::string>();
-			BOOST_LOG_TRIVIAL(info) << "CommutatorVigicrues: " << "New " << propertyName << " value: " << valueStr;
-
-			if (propertyName == "flow_tendency") {
-				m_flowTendency = valueStr;
-			}
-			if (propertyName == "flow_value") {
-				m_flowValue = std::stof(valueStr);
-			}
-			if (propertyName == "water_level_tendency") {
-				m_waterLevelTendency = valueStr;
-			}
-			if (propertyName == "water_level_value") {
-				m_waterLevelValue = std::stof(valueStr);
-			}
-		}
-
-		newData();
-	}
-}
-
 CommutatorVigicrues::CommutatorVigicrues():
-	Commutator("Vigicrues")
+	Commutator("Vigicrues"),
+	m_connection(sdbus::createSystemBusConnection())
 {
-	auto connection = sdbus::createSystemBusConnection();
 	sdbus::ServiceName destination{"com.commutator.Vigicrues"};
 	sdbus::ObjectPath objectPath{"/com/commutator/Vigicrues"};
-	m_proxy = sdbus::createProxy(*connection, std::move(destination), std::move(objectPath));
+	m_proxy = sdbus::createProxy(*m_connection, std::move(destination), std::move(objectPath));
 
 	sdbus::InterfaceName interfaceName{"org.freedesktop.DBus.Properties"};
 	sdbus::SignalName signalName{"PropertiesChanged"};
@@ -81,5 +50,38 @@ CommutatorVigicrues::CommutatorVigicrues():
 		BOOST_LOG_TRIVIAL(error) << "CommutatorVigicrues: " << "Got error " << e.getName() << " with message " << e.getMessage();
 	}
 
+	m_connection->enterEventLoopAsync();
+
 	BOOST_LOG_TRIVIAL(info) << "CommutatorVigicrues created.";
+}
+
+void CommutatorVigicrues::onPropertiesChanged(sdbus::Signal signal)
+{
+	std::string interfaceName;
+	std::map<std::string, sdbus::Variant> changedProperties;
+	std::vector<std::string> invalidatedProperties;
+
+	signal >> interfaceName >> changedProperties >> invalidatedProperties;
+
+	if (!changedProperties.empty()) {
+		for (const auto& [propertyName, propertyValue] : changedProperties) {
+			std::string valueStr = propertyValue.get<std::string>();
+			BOOST_LOG_TRIVIAL(info) << "CommutatorVigicrues: " << "New " << propertyName << " value: " << valueStr;
+
+			if (propertyName == "flow_tendency") {
+				m_flowTendency = valueStr;
+			}
+			if (propertyName == "flow_value") {
+				m_flowValue = std::stof(valueStr);
+			}
+			if (propertyName == "water_level_tendency") {
+				m_waterLevelTendency = valueStr;
+			}
+			if (propertyName == "water_level_value") {
+				m_waterLevelValue = std::stof(valueStr);
+			}
+		}
+
+		newData();
+	}
 }

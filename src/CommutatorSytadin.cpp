@@ -2,42 +2,10 @@
 
 #include <boost/log/trivial.hpp>
 
-void CommutatorSytadin::onPropertiesChanged(sdbus::Signal signal)
-{
-	std::string interfaceName;
-	std::map<std::string, sdbus::Variant> changedProperties;
-	std::vector<std::string> invalidatedProperties;
-
-	BOOST_LOG_TRIVIAL(trace) << "CommutatorSytadin: " << "onPropertiesChanged";
-
-	signal >> interfaceName >> changedProperties >> invalidatedProperties;
-
-	if (!changedProperties.empty()) {
-		for (const auto& [propertyName, propertyValue] : changedProperties) {
-			std::string valueStr = propertyValue.get<std::string>();
-			BOOST_LOG_TRIVIAL(info) << "CommutatorSytadin: " << "New " << propertyName << " value: " << valueStr;
-
-			if (propertyName == "traffic_level") {
-				m_trafficLevel = valueStr;
-			}
-			if (propertyName == "traffic_tendency") {
-				m_trafficTendency = valueStr;
-			}
-			if (propertyName == "traffic_value") {
-				m_trafficValue = std::stoi(valueStr);
-			}
-		}
-
-		newData();
-	}
-}
-
 CommutatorSytadin::CommutatorSytadin():
-	Commutator("Sytadin")
+	Commutator("Sytadin"),
+	m_connection(sdbus::createSystemBusConnection())
 {
-	auto connection = sdbus::createSystemBusConnection();
-	m_connection = std::move(connection);
-	
 	sdbus::ServiceName destination{"com.commutator.Sytadin"};
 	sdbus::ObjectPath objectPath{"/com/commutator/Sytadin"};
 	m_proxy = sdbus::createProxy(*m_connection, std::move(destination), std::move(objectPath));
@@ -78,5 +46,37 @@ CommutatorSytadin::CommutatorSytadin():
 		BOOST_LOG_TRIVIAL(error) << "CommutatorSytadin: " << "Got error " << e.getName() << " with message " << e.getMessage();
 	}
 
+	m_connection->enterEventLoopAsync();
+
 	BOOST_LOG_TRIVIAL(info) << "CommutatorSytadin: " << "CommutatorSytadin created.";
+}
+
+void CommutatorSytadin::onPropertiesChanged(sdbus::Signal signal)
+{
+	std::string interfaceName;
+	std::map<std::string, sdbus::Variant> changedProperties;
+	std::vector<std::string> invalidatedProperties;
+
+	BOOST_LOG_TRIVIAL(trace) << "CommutatorSytadin: " << "onPropertiesChanged";
+
+	signal >> interfaceName >> changedProperties >> invalidatedProperties;
+
+	if (!changedProperties.empty()) {
+		for (const auto& [propertyName, propertyValue] : changedProperties) {
+			std::string valueStr = propertyValue.get<std::string>();
+			BOOST_LOG_TRIVIAL(info) << "CommutatorSytadin: " << "New " << propertyName << " value: " << valueStr;
+
+			if (propertyName == "traffic_level") {
+				m_trafficLevel = valueStr;
+			}
+			if (propertyName == "traffic_tendency") {
+				m_trafficTendency = valueStr;
+			}
+			if (propertyName == "traffic_value") {
+				m_trafficValue = std::stoi(valueStr);
+			}
+		}
+
+		newData();
+	}
 }

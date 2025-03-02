@@ -40,51 +40,13 @@ std::string CommutatorIdfmLineReports::getLineFromString(IdfmTransportMode mode,
 	return line;
 }
 
-void CommutatorIdfmLineReports::onPropertiesChanged(sdbus::Signal signal)
-{
-	std::string interfaceName;
-	std::map<std::string, sdbus::Variant> changedProperties;
-	std::vector<std::string> invalidatedProperties;
-
-	std::vector<std::pair<IdfmTransportMode, std::string>> vec;
-
-	auto addPairIfNotExists = [&](const std::pair<IdfmTransportMode, std::string>& p) {
-		if (std::find(vec.begin(), vec.end(), p) == vec.end()) {
-			vec.push_back(p);
-			BOOST_LOG_TRIVIAL(trace) << "CommutatorIdfmLineReports: Pair added: (" << idfmTransportModeToString(p.first) << ", " << p.second << ")";
-		} else {
-			BOOST_LOG_TRIVIAL(trace) << "CommutatorIdfmLineReports: Pair already present: (" << idfmTransportModeToString(p.first) << ", " << p.second << ")";
-		}
-	};
-
-	signal >> interfaceName >> changedProperties >> invalidatedProperties;
-
-	if (!changedProperties.empty()) {
-		for (const auto& [propertyName, propertyValue] : changedProperties) {
-
-			IdfmTransportMode mode = getModeFromString(interfaceName);
-			std::string line = getLineFromString(mode, interfaceName);
-			
-			std::string valueStr = propertyValue.get<std::string>();
-			BOOST_LOG_TRIVIAL(info) << "CommutatorIdfmLineReports: " << interfaceName <<  " New " << propertyName << " value: " << valueStr;
-
-			addPairIfNotExists(std::make_pair(mode, line));
-		}
-
-		for (const auto& p : vec) {
-			BOOST_LOG_TRIVIAL(trace) << "CommutatorIdfmLineReports: newData " << "(" << idfmTransportModeToString(p.first) << ", " << p.second << ")";
-			newData(p.first, p.second);
-		}
-	}
-}
-
 CommutatorIdfmLineReports::CommutatorIdfmLineReports():
-	Commutator("IdfmLineReports")
+	Commutator("IdfmLineReports"),
+	m_connection(sdbus::createSystemBusConnection())
 {
-	auto connection = sdbus::createSystemBusConnection();
 	sdbus::ServiceName destination{"com.commutator.IdfmLineReports"};
 	sdbus::ObjectPath objectPath{"/com/commutator/IdfmLineReports"};
-	std::unique_ptr<sdbus::IProxy> proxy = sdbus::createProxy(*connection, std::move(destination), std::move(objectPath));
+	std::unique_ptr<sdbus::IProxy> proxy = sdbus::createProxy(*m_connection, std::move(destination), std::move(objectPath));
 
 
 	sdbus::InterfaceName introspectable{"org.freedesktop.DBus.Introspectable"};
@@ -160,6 +122,8 @@ CommutatorIdfmLineReports::CommutatorIdfmLineReports():
 		}
 	}
 
+	m_connection->enterEventLoopAsync();
+
 	BOOST_LOG_TRIVIAL(info) << "CommutatorIdfmLineReports: " << "CommutatorIdfmLineReports created.";
 }
 
@@ -174,4 +138,42 @@ std::string CommutatorIdfmLineReports::getLineSeverityEffect(IdfmTransportMode m
 	}
 
 	return str;
+}
+
+void CommutatorIdfmLineReports::onPropertiesChanged(sdbus::Signal signal)
+{
+	std::string interfaceName;
+	std::map<std::string, sdbus::Variant> changedProperties;
+	std::vector<std::string> invalidatedProperties;
+
+	std::vector<std::pair<IdfmTransportMode, std::string>> vec;
+
+	auto addPairIfNotExists = [&](const std::pair<IdfmTransportMode, std::string>& p) {
+		if (std::find(vec.begin(), vec.end(), p) == vec.end()) {
+			vec.push_back(p);
+			BOOST_LOG_TRIVIAL(trace) << "CommutatorIdfmLineReports: Pair added: (" << idfmTransportModeToString(p.first) << ", " << p.second << ")";
+		} else {
+			BOOST_LOG_TRIVIAL(trace) << "CommutatorIdfmLineReports: Pair already present: (" << idfmTransportModeToString(p.first) << ", " << p.second << ")";
+		}
+	};
+
+	signal >> interfaceName >> changedProperties >> invalidatedProperties;
+
+	if (!changedProperties.empty()) {
+		for (const auto& [propertyName, propertyValue] : changedProperties) {
+
+			IdfmTransportMode mode = getModeFromString(interfaceName);
+			std::string line = getLineFromString(mode, interfaceName);
+			
+			std::string valueStr = propertyValue.get<std::string>();
+			BOOST_LOG_TRIVIAL(info) << "CommutatorIdfmLineReports: " << interfaceName <<  " New " << propertyName << " value: " << valueStr;
+
+			addPairIfNotExists(std::make_pair(mode, line));
+		}
+
+		for (const auto& p : vec) {
+			BOOST_LOG_TRIVIAL(trace) << "CommutatorIdfmLineReports: newData " << "(" << idfmTransportModeToString(p.first) << ", " << p.second << ")";
+			newData(p.first, p.second);
+		}
+	}
 }

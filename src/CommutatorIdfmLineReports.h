@@ -21,6 +21,7 @@ private:
 	std::string getLineFromString(IdfmTransportMode mode, std::string interfaceName);
 	void onPropertiesChanged(sdbus::Signal signal);
 
+	std::shared_ptr<sdbus::IConnection> m_connection;
 	std::map<std::unique_ptr<IdfmLineStatus>,
 		 std::unique_ptr<sdbus::IProxy>> m_linesMap;
 };
