@@ -81,9 +81,10 @@ void CommutatorIdfmLineReports::onPropertiesChanged(sdbus::Signal& signal)
 CommutatorIdfmLineReports::CommutatorIdfmLineReports():
 	Commutator("IdfmLineReports")
 {
+	auto connection = sdbus::createSystemBusConnection();
 	sdbus::ServiceName destination{"com.commutator.IdfmLineReports"};
 	sdbus::ObjectPath objectPath{"/com/commutator/IdfmLineReports"};
-	std::unique_ptr<sdbus::IProxy> proxy = sdbus::createProxy(std::move(destination), std::move(objectPath));
+	std::unique_ptr<sdbus::IProxy> proxy = sdbus::createProxy(*connection, std::move(destination), std::move(objectPath));
 
 
 	sdbus::InterfaceName introspectable{"org.freedesktop.DBus.Introspectable"};
@@ -104,10 +105,11 @@ CommutatorIdfmLineReports::CommutatorIdfmLineReports():
 	for (pugi::xml_node node = doc.child("node").child("node"); node; node = node.next_sibling("node")) {
 		const std::string lineName = node.attribute("name").as_string();
 
+		auto connection = sdbus::createSystemBusConnection();
 		sdbus::ServiceName destination{"com.commutator.IdfmLineReports"};
 		sdbus::ObjectPath objectPath{"/com/commutator/IdfmLineReports/" + lineName};
 		
-		auto proxy = sdbus::createProxy(std::move(destination), std::move(objectPath));
+		auto proxy = sdbus::createProxy(*connection, std::move(destination), std::move(objectPath));
 
 		sdbus::InterfaceName interfaceName{"org.freedesktop.DBus.Properties"};
 		sdbus::SignalName signalName{"PropertiesChanged"};

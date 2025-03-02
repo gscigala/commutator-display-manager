@@ -36,9 +36,10 @@ void CommutatorVigicrues::onPropertiesChanged(sdbus::Signal& signal)
 CommutatorVigicrues::CommutatorVigicrues():
 	Commutator("Vigicrues")
 {
+	auto connection = sdbus::createSystemBusConnection();
 	sdbus::ServiceName destination{"com.commutator.Vigicrues"};
 	sdbus::ObjectPath objectPath{"/com/commutator/Vigicrues"};
-	m_proxy = sdbus::createProxy(std::move(destination), std::move(objectPath));
+	m_proxy = sdbus::createProxy(*connection, std::move(destination), std::move(objectPath));
 
 	sdbus::InterfaceName interfaceName{"org.freedesktop.DBus.Properties"};
 	sdbus::SignalName signalName{"PropertiesChanged"};

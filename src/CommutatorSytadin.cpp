@@ -33,9 +33,10 @@ void CommutatorSytadin::onPropertiesChanged(sdbus::Signal& signal)
 CommutatorSytadin::CommutatorSytadin():
 	Commutator("Sytadin")
 {
+	auto connection = sdbus::createSystemBusConnection();
 	sdbus::ServiceName destination{"com.commutator.Sytadin"};
 	sdbus::ObjectPath objectPath{"/com/commutator/Sytadin"};
-	m_proxy = sdbus::createProxy(std::move(destination), std::move(objectPath));
+	m_proxy = sdbus::createProxy(*connection, std::move(destination), std::move(objectPath));
 
 	sdbus::InterfaceName interfaceName{"org.freedesktop.DBus.Properties"};
 	sdbus::SignalName signalName{"PropertiesChanged"};
@@ -43,7 +44,7 @@ CommutatorSytadin::CommutatorSytadin():
 				       [this](sdbus::Signal signal) {
 					       this->onPropertiesChanged(signal);
 				       });
-
+	
 	sdbus::MethodName getAll{"GetAll"};
 	auto method = m_proxy->createMethodCall(interfaceName, getAll);
 	method << "";
