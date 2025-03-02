@@ -137,7 +137,7 @@ void WidgetVigicrues::newDataSlot() {
 		tmpValue = m_commutator->getFlowValue();
 	}
 	else if (m_capability == Capability::WATER_LEVEL) {
-		tmpTendency = m_commutator->getWaterLevelValue();
+		tmpTendency = m_commutator->getWaterLevelTendency();
 		tmpValue = m_commutator->getWaterLevelValue();
 	}
 	else {
