@@ -8,6 +8,8 @@ void CommutatorSytadin::onPropertiesChanged(sdbus::Signal signal)
 	std::map<std::string, sdbus::Variant> changedProperties;
 	std::vector<std::string> invalidatedProperties;
 
+	BOOST_LOG_TRIVIAL(trace) << "CommutatorSytadin: " << "onPropertiesChanged";
+
 	signal >> interfaceName >> changedProperties >> invalidatedProperties;
 
 	if (!changedProperties.empty()) {
@@ -30,13 +32,23 @@ void CommutatorSytadin::onPropertiesChanged(sdbus::Signal signal)
 	}
 }
 
+void onConcatenated(sdbus::Signal signal)
+{
+    std::string concatenatedString;
+    signal >> concatenatedString;
+
+    std::cout << "Received signal with concatenated string " << concatenatedString << std::endl;
+}
+
 CommutatorSytadin::CommutatorSytadin():
 	Commutator("Sytadin")
 {
 	auto connection = sdbus::createSystemBusConnection();
+	m_connection = std::move(connection);
+	
 	sdbus::ServiceName destination{"com.commutator.Sytadin"};
 	sdbus::ObjectPath objectPath{"/com/commutator/Sytadin"};
-	m_proxy = sdbus::createProxy(*connection, std::move(destination), std::move(objectPath));
+	m_proxy = sdbus::createProxy(*m_connection, std::move(destination), std::move(objectPath));
 
 	sdbus::InterfaceName interfaceName{"org.freedesktop.DBus.Properties"};
 	sdbus::SignalName signalName{"PropertiesChanged"};
