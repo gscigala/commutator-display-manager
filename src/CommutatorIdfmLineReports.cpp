@@ -67,11 +67,10 @@ CommutatorIdfmLineReports::CommutatorIdfmLineReports():
 	for (pugi::xml_node node = doc.child("node").child("node"); node; node = node.next_sibling("node")) {
 		const std::string lineName = node.attribute("name").as_string();
 
-		auto connection = sdbus::createSystemBusConnection();
 		sdbus::ServiceName destination{"com.commutator.IdfmLineReports"};
 		sdbus::ObjectPath objectPath{"/com/commutator/IdfmLineReports/" + lineName};
 		
-		auto proxy = sdbus::createProxy(*connection, std::move(destination), std::move(objectPath));
+		auto proxy = sdbus::createProxy(*m_connection, std::move(destination), std::move(objectPath));
 
 		sdbus::InterfaceName interfaceName{"org.freedesktop.DBus.Properties"};
 		sdbus::SignalName signalName{"PropertiesChanged"};
