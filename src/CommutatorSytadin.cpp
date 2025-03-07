@@ -37,7 +37,10 @@ CommutatorSytadin::CommutatorSytadin():
 				BOOST_LOG_TRIVIAL(info) << "CommutatorSytadin: " << "Got trafficTendency : " << m_trafficTendency;
 			}
 			if (key == "traffic_value") {
-				m_trafficValue = std::stoi(valueStr);
+				if (!valueStr.empty())
+					m_trafficValue = std::stoi(valueStr);
+				else
+					m_trafficValue = 0;
 				BOOST_LOG_TRIVIAL(info) << "CommutatorSytadin: " << "Got trafficValue : " << m_trafficValue;
 			}
 		}
