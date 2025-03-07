@@ -128,6 +128,8 @@ void WidgetSytadin::redraw()
 	std::string trafficValueStr;
 	int cols;
 
+	BOOST_LOG_TRIVIAL(trace) << getName() << ": redraw";
+
 	if (m_trafficLevel == "Unusual") {
 		textColor = Display::Color::RED;
 		backgroundColor = Display::Color::WHITE;

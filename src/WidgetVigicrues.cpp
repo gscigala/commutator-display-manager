@@ -167,6 +167,8 @@ void WidgetVigicrues::redraw()
 	std::string valueStr;
 	int cols;
 
+	BOOST_LOG_TRIVIAL(trace) << getName() << ": redraw";
+
 	if (m_value < m_alertThreshold) {
 		textColor = Display::Color::BLACK;
 		backgroundColor = Display::Color::WHITE;
