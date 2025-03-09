@@ -117,8 +117,6 @@ void WidgetIdfmLineReports::newDataSlot(IdfmTransportMode mode, const std::strin
 	if ((mode == m_mode) && (name == m_name)) {
 		std::string severityEffect = m_commutator->getLineSeverityEffect(m_mode, m_name);
 		BOOST_LOG_TRIVIAL(debug) << getName() << ": new data match with this widget!";
-		BOOST_LOG_TRIVIAL(trace) << getName() << ": m_severityEffect = " << m_severityEffect;
-		BOOST_LOG_TRIVIAL(trace) << getName() << ": severityEffect = " << severityEffect;
 		if (m_severityEffect != severityEffect) {
 			m_severityEffect = severityEffect;
 
