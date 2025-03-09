@@ -7,9 +7,9 @@ opencv_dep = dependency('opencv4', version : '>= 4.0.0')
 nlohmann_json_dep = dependency('nlohmann_json', version : '>= 3.11.3')
 
 include_dirs = include_directories(
-    'lib/e-Paper/RaspberryPi_JetsonNano/c/lib/Config',
-    'lib/e-Paper/RaspberryPi_JetsonNano/c/lib/e-Paper',
-    'lib/e-Paper/RaspberryPi_JetsonNano/c/lib/GUI',
+    'lib/e-Paper/E-paper_Separate_Program/2in15_e-Paper_G/RaspberryPi_JetsonNano/c/lib/Config',
+    'lib/e-Paper/E-paper_Separate_Program/2in15_e-Paper_G/RaspberryPi_JetsonNano/c/lib/e-Paper',
+    'lib/e-Paper/E-paper_Separate_Program/2in15_e-Paper_G/RaspberryPi_JetsonNano/c/lib/GUI',
 )
 
 src_files = files('src/main.cpp',

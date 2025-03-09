@@ -162,14 +162,30 @@ void CommutatorIdfmLineReports::onPropertiesChanged(sdbus::Signal signal)
 		for (const auto& [propertyName, propertyValue] : changedProperties) {
 
 			IdfmTransportMode mode = getModeFromString(interfaceName);
-			std::string line = getLineFromString(mode, interfaceName);
+			std::string name = getLineFromString(mode, interfaceName);
 			
 			std::string valueStr = propertyValue.get<std::string>();
 			BOOST_LOG_TRIVIAL(info) << "CommutatorIdfmLineReports: " << interfaceName <<  " New " << propertyName << " value: " << valueStr;
 
-			addPairIfNotExists(std::make_pair(mode, line));
+			/* Update line data */
+			for (const auto& [line, proxy] : m_linesMap) {
+				if (mode == line->getTransportMode()
+				    && line->getName() == name) {
+					if (propertyName == "severity_color")
+						line->setSeverityColor(valueStr);
+					else if (propertyName == "severity_effect")
+						line->setSeverityEffect(valueStr);
+					else if (propertyName == "text_color")
+						line->setTextColor(valueStr);
+					else
+						BOOST_LOG_TRIVIAL(error) << "CommutatorIdfmLineReports: newData but unknown property name " << valueStr << "!";
+				}
+			}
+
+			addPairIfNotExists(std::make_pair(mode, name));
 		}
 
+		/* Send only ones new data signal for a line */
 		for (const auto& p : vec) {
 			BOOST_LOG_TRIVIAL(trace) << "CommutatorIdfmLineReports: newData " << "(" << idfmTransportModeToString(p.first) << ", " << p.second << ")";
 			newData(p.first, p.second);
