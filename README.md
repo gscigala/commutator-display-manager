@@ -1,5 +1,7 @@
 # Commutator-Display-Manager
 
+Program to display on a epaper screen multiple informations.
+
 ## Installation
 
 ### Dependencies
