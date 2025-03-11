@@ -3,6 +3,7 @@
 
 #include "Widget.h"
 #include "Display.h"
+#include "EPaper.h"
 
 #include <map>
 #include <memory>
@@ -17,7 +18,7 @@ using namespace boost::placeholders;
 
 class Supervisor {
 public:
-	Supervisor();
+	Supervisor(bool epaperFake);
 	~Supervisor();
 
 	int registerWidget(std::shared_ptr<Widget> widget, Display::WidgetPosition position);
@@ -38,6 +39,8 @@ private:
 	void runIoService() {
 		m_ioService.run();
 	}
+
+	std::unique_ptr<EPaper> m_epaper;
 
 	std::map<Display::WidgetPosition, std::shared_ptr<Widget>> m_widgetMap;
 

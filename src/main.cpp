@@ -74,17 +74,12 @@ int main(int argc, char* argv[])
 	std::signal(SIGINT, signalHandler);
 	std::signal(SIGTERM, signalHandler);
 
-	Supervisor supervisor;
-
-	std::shared_ptr<CommutatorSytadin> commutatorSytadin = std::make_shared<CommutatorSytadin>();
-	std::shared_ptr<CommutatorVigicrues> commutatorVigicrues = std::make_shared<CommutatorVigicrues>();
-	std::shared_ptr<CommutatorIdfmLineReports> commutatorIdfmLineReports = std::make_shared<CommutatorIdfmLineReports>();
-
 	po::options_description desc("Options");
 	desc.add_options()
 		("help,h", "Print help messages")
 		("config,c", po::value<std::string>(), "Configuration file path")
-		("ressources,r", po::value<std::string>(), "Ressources directory path");
+		("ressources,r", po::value<std::string>(), "Ressources directory path")
+		("fake", "Enable fake epaper mode");
 
 	po::variables_map vm;
 	po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -121,6 +116,12 @@ int main(int argc, char* argv[])
 		resDirPath = vm["ressources"].as<std::string>();
 	}
 	BOOST_LOG_TRIVIAL(debug) << "Ressources directory path = " << resDirPath;
+
+	Supervisor supervisor(vm.count("fake"));
+
+	std::shared_ptr<CommutatorSytadin> commutatorSytadin = std::make_shared<CommutatorSytadin>();
+	std::shared_ptr<CommutatorVigicrues> commutatorVigicrues = std::make_shared<CommutatorVigicrues>();
+	std::shared_ptr<CommutatorIdfmLineReports> commutatorIdfmLineReports = std::make_shared<CommutatorIdfmLineReports>();
 
 	std::shared_ptr<Widget> widgetTopLeft;
 	std::shared_ptr<Widget> widgetTopRight;

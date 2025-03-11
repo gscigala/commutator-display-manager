@@ -1,10 +1,13 @@
 #include "Supervisor.h"
 
+#include "EPaperFake.h"
+#include "EPaperWaveshare.h"
+
 #include <boost/log/trivial.hpp>
 
 #include <opencv2/opencv.hpp>
 
-Supervisor::Supervisor():
+Supervisor::Supervisor(bool epaperFake):
 	m_ioService(),
 	m_work(m_ioService),
 	m_ioThread(&Supervisor::runIoService, this),
@@ -14,6 +17,11 @@ Supervisor::Supervisor():
 	m_refreshCounter(0)
 {
 	BOOST_LOG_TRIVIAL(info) << "Supervisor: " << "Supervisor created.";
+
+	if (!epaperFake)
+		m_epaper = std::make_unique<EPaperWaveshare>();
+	else
+		m_epaper = std::make_unique<EPaperFake>();
 
 	m_displayArray = new Display::Color*[Display::DISPLAY_ROWS];
 	for (int i = 0; i < Display::DISPLAY_ROWS; ++i) {
