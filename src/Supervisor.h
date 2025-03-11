@@ -40,7 +40,7 @@ private:
 		m_ioService.run();
 	}
 
-	std::unique_ptr<EPaper> m_epaper;
+	std::shared_ptr<EPaper> m_epaper;
 
 	std::map<Display::WidgetPosition, std::shared_ptr<Widget>> m_widgetMap;
 

@@ -19,9 +19,9 @@ Supervisor::Supervisor(bool epaperFake):
 	BOOST_LOG_TRIVIAL(info) << "Supervisor: " << "Supervisor created.";
 
 	if (!epaperFake)
-		m_epaper = std::make_unique<EPaperWaveshare>();
+		m_epaper = std::make_shared<EPaperWaveshare>();
 	else
-		m_epaper = std::make_unique<EPaperFake>();
+		m_epaper = std::make_shared<EPaperFake>();
 
 	m_displayArray = new Display::Color*[Display::DISPLAY_ROWS];
 	for (int i = 0; i < Display::DISPLAY_ROWS; ++i) {
