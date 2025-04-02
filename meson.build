@@ -38,6 +38,7 @@ executable('commutator-display-manager',
            include_directories: include_dirs,
            c_args: ['-D USE_BCM2835_LIB', '-D RPI'],
            cpp_args : ['-Werror','-Wno-deprecated-enum-enum-conversion'],
+           link_args: ['-Wl,--gc-sections','-lbcm2835','-lm'],
            install: true,
            install_dir: '/usr/bin'
 )
