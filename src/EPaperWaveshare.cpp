@@ -26,6 +26,8 @@ EPaperWaveshare::EPaperWaveshare(): EPaper()
 
 EPaperWaveshare::~EPaperWaveshare()
 {
+	EPD_2IN15G_Clear(EPD_2IN15G_WHITE);
+
 	EPD_2IN15G_Sleep();
 	DEV_Delay_ms(2000); // required by Waveshare
 
