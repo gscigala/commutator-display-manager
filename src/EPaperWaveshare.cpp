@@ -53,7 +53,7 @@ void EPaperWaveshare::redraw(Display::Color** displayArray)
 		for(int x = 0; x < EPD_2IN15G_WIDTH; x++) {
 			EPaperWaveshare::Color color;
 
-			switch (displayArray[y][x]) {
+			switch (displayArray[x][y]) {
 			case Display::Color::Black: {
 				color = EPaperWaveshare::Color::Black;
 				break;
