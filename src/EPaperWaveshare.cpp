@@ -74,10 +74,13 @@ void EPaperWaveshare::redraw(Display::Color** displayArray)
 			}
 			
 			Paint_SetPixel(EPD_2IN15G_WIDTH-x,
-				       EPD_2IN15G_HEIGHT-y,
+				       y,
 				       static_cast<UWORD>(color));
 		}
 	}
 
 	EPD_2IN15G_Display(image);
+
+	free(image);
+	image = NULL;
 }
