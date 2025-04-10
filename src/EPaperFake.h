@@ -7,6 +7,8 @@ class EPaperFake: public EPaper {
 public:
 	EPaperFake();
 	~EPaperFake();
+
+	void redraw(Display::Color** displayArray);
 };
 
 #endif // EPAPERFAKE_H

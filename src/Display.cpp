@@ -75,7 +75,7 @@ namespace Display {
 
 		for (int page = 0; page < rows; page++) {
 			for (int column = 0; column < cols; column++) {
-				if (image[page][column] == Display::Color::BLACK)
+				if (image[page][column] == Display::Color::Black)
 					displayArray[y+page][x+column] = textColor;
 				else
 					displayArray[y+page][x+column] = backgroundColor;

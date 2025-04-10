@@ -30,7 +30,7 @@ Supervisor::Supervisor(bool epaperFake):
 
 	for (int i = 0; i < Display::DISPLAY_ROWS; ++i) {
 		for (int j = 0; j < Display::DISPLAY_COLS; ++j) {
-			m_displayArray[i][j] = Display::Color::WHITE;
+			m_displayArray[i][j] = Display::Color::White;
 		}
 	}
 
@@ -39,10 +39,10 @@ Supervisor::Supervisor(bool epaperFake):
 		for (int j = 0; j < Display::DISPLAY_COLS; ++j) {
 			if ((i == Display::DISPLAY_ROWS/2)
 			    || (i == Display::DISPLAY_ROWS/2 - 1))
-				m_displayArray[i][j] = Display::Color::BLACK;
+				m_displayArray[i][j] = Display::Color::Black;
 			if ((j == Display::DISPLAY_COLS/2)
 				|| (j == Display::DISPLAY_COLS/2 - 1))
-				m_displayArray[i][j] = Display::Color::BLACK;
+				m_displayArray[i][j] = Display::Color::Black;
 		}
 	}
 }
@@ -97,16 +97,16 @@ void Supervisor::generateDebugImage() const {
 		for (int j = 0; j < Display::DISPLAY_COLS; ++j) {
 			cv::Scalar color;
 			switch (m_displayArray[i][j]) {
-			case Display::Color::BLACK:
+			case Display::Color::Black:
 				color = cv::Scalar(3, 11, 18);
 				break;
-			case Display::Color::RED:
+			case Display::Color::Red:
 				color = cv::Scalar(11, 25, 161);
 				break;
-			case Display::Color::YELLOW:
+			case Display::Color::Yellow:
 				color = cv::Scalar(14, 180, 255);
 				break;
-			case Display::Color::WHITE:
+			case Display::Color::White:
 			default:
 				color = cv::Scalar(208, 203, 203);
 				break;

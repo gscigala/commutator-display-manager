@@ -11,3 +11,8 @@ EPaperFake::~EPaperFake()
 {
 	BOOST_LOG_TRIVIAL(info) << "EPaperFake: " << " destroyed.";
 }
+
+void EPaperFake::redraw(Display::Color** displayArray)
+{
+	/* To nothing */
+}

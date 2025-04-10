@@ -20,10 +20,10 @@ namespace Display {
 	};
 
 	enum class Color {
-		BLACK,
-		WHITE,
-		RED,
-		YELLOW
+		Black,
+		White,
+		Yellow,
+		Red
 	};
 	
 	std::string positionToString(WidgetPosition position);

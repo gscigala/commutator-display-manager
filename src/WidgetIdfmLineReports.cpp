@@ -147,18 +147,18 @@ void WidgetIdfmLineReports::redraw()
 	BOOST_LOG_TRIVIAL(trace) << getName() << ": redraw";
 
 	if (m_severityEffect == "SIGNIFICANT_DELAYS") {
-		textColor = Display::Color::RED;
-		backgroundColor = Display::Color::WHITE;
+		textColor = Display::Color::Red;
+		backgroundColor = Display::Color::White;
 		xModeOffset = xModeOffsetWithIssue;
 		xNameOffset = xNameOffsetWithIssue;
 	} else if (m_severityEffect == "NO_SERVICE") {
-		textColor = Display::Color::WHITE;
-		backgroundColor = Display::Color::RED;
+		textColor = Display::Color::White;
+		backgroundColor = Display::Color::Red;
 		xModeOffset = xModeOffsetWithIssue;
 		xNameOffset = xNameOffsetWithIssue;
 	} else {
-		textColor = Display::Color::BLACK;
-		backgroundColor = Display::Color::WHITE;
+		textColor = Display::Color::Black;
+		backgroundColor = Display::Color::White;
 		xModeOffset = xModeOffsetWithoutIssue;
 		xNameOffset = xNameOffsetWithoutIssue;
 	}

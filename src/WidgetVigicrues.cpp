@@ -170,14 +170,14 @@ void WidgetVigicrues::redraw()
 	BOOST_LOG_TRIVIAL(trace) << getName() << ": redraw";
 
 	if (m_value < m_alertThreshold) {
-		textColor = Display::Color::BLACK;
-		backgroundColor = Display::Color::WHITE;
+		textColor = Display::Color::Black;
+		backgroundColor = Display::Color::White;
 	} else if (m_alertThreshold < m_value && m_value < m_blockingThreshold) {
-		textColor = Display::Color::RED;
-		backgroundColor = Display::Color::WHITE;	
+		textColor = Display::Color::Red;
+		backgroundColor = Display::Color::White;	
 	} else {
-		textColor = Display::Color::WHITE;
-		backgroundColor = Display::Color::RED;
+		textColor = Display::Color::White;
+		backgroundColor = Display::Color::Red;
 	}
 
 	if (m_tendency == "Increasing")

@@ -33,3 +33,49 @@ EPaperWaveshare::~EPaperWaveshare()
 
 	BOOST_LOG_TRIVIAL(info) << "EPaperWaveshare: " << " destroyed.";
 }
+
+void EPaperWaveshare::redraw(Display::Color** displayArray)
+{
+	UBYTE *image;
+	UWORD Imagesize = ((EPD_2IN15G_WIDTH % 4 == 0)? (EPD_2IN15G_WIDTH / 4 ): (EPD_2IN15G_WIDTH / 4 + 1)) * EPD_2IN15G_HEIGHT;
+	if((image = (UBYTE *)malloc(Imagesize)) == NULL) {
+		printf("%s: failed to allocate image memory...\n", __func__);
+		return;
+	}
+
+	BOOST_LOG_TRIVIAL(debug) << "EPaperWaveshare redraw";
+
+	Paint_NewImage(image, EPD_2IN15G_WIDTH, EPD_2IN15G_HEIGHT, 0, EPD_2IN15G_WHITE);
+	Paint_SetScale(4);
+	Paint_SelectImage(image);
+
+	for(int y = 0; y < EPD_2IN15G_HEIGHT; y++) {
+		for(int x = 0; x < EPD_2IN15G_WIDTH; x++) {
+			EPaperWaveshare::Color color;
+
+			switch (displayArray[y][x]) {
+			case Display::Color::Black: {
+				color = EPaperWaveshare::Color::Black;
+				break;
+			}
+			case Display::Color::Yellow: {
+				color = EPaperWaveshare::Color::Yellow;
+				break;
+			}
+			case Display::Color::Red: {
+				color = EPaperWaveshare::Color::Red;
+				break;
+			}
+			case Display::Color::White:
+			default: {
+				color = EPaperWaveshare::Color::White;
+				break;
+			}
+			}
+			
+			Paint_SetPixel(x, y, static_cast<UWORD>(color));
+		}
+	}
+
+	EPD_2IN15G_Display(image);
+}

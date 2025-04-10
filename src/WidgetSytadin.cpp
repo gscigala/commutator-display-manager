@@ -131,14 +131,14 @@ void WidgetSytadin::redraw()
 	BOOST_LOG_TRIVIAL(trace) << getName() << ": redraw";
 
 	if (m_trafficLevel == "Unusual") {
-		textColor = Display::Color::RED;
-		backgroundColor = Display::Color::WHITE;
+		textColor = Display::Color::Red;
+		backgroundColor = Display::Color::White;
 	} else if (m_trafficLevel == "Exceptional") {
-		textColor = Display::Color::WHITE;
-		backgroundColor = Display::Color::RED;
+		textColor = Display::Color::White;
+		backgroundColor = Display::Color::Red;
 	} else {
-		textColor = Display::Color::BLACK;
-		backgroundColor = Display::Color::WHITE;
+		textColor = Display::Color::Black;
+		backgroundColor = Display::Color::White;
 	}
 
 	if (m_trafficTendency == "Increasing")
