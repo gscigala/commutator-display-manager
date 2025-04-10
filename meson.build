@@ -29,7 +29,8 @@ src_files = files('src/main.cpp',
                   'src/IdfmTransportMode.cpp',
                   'lib/e-Paper/E-paper_Separate_Program/2in15_e-Paper_G/RaspberryPi_JetsonNano/c/lib/Config/DEV_Config.c',
                   'lib/e-Paper/E-paper_Separate_Program/2in15_e-Paper_G/RaspberryPi_JetsonNano/c/lib/e-Paper/EPD_2in15g.c',
-                  'lib/e-Paper/E-paper_Separate_Program/2in15_e-Paper_G/RaspberryPi_JetsonNano/c/lib//Fonts/font24.c',
+                  'lib/e-Paper/E-paper_Separate_Program/2in15_e-Paper_G/RaspberryPi_JetsonNano/c/lib/Fonts/font24.c',
+                  'lib/e-Paper/E-paper_Separate_Program/2in15_e-Paper_G/RaspberryPi_JetsonNano/c/lib/GUI/GUI_Paint.c',
 )
 
 executable('commutator-display-manager',
