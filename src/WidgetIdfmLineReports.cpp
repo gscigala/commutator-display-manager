@@ -16,7 +16,7 @@ WidgetIdfmLineReports::WidgetIdfmLineReports(std::shared_ptr<CommutatorIdfmLineR
 
 	m_severityEffect = m_commutator->getLineSeverityEffect(m_mode, m_name);
 	if (m_severityEffect == "") {
-		BOOST_LOG_TRIVIAL(error) << getName() << ": unknown line!";
+		BOOST_LOG_TRIVIAL(error) << getName() << ": unknown line " << m_name;
 		throw std::runtime_error("unknown line!");
 	} else {
 		BOOST_LOG_TRIVIAL(trace) << getName() << ": m_severityEffect = " << m_severityEffect;
