@@ -248,7 +248,8 @@ void Supervisor::redraw()
 
 	m_refreshCounter++;
 	BOOST_LOG_TRIVIAL(trace) << "Supervisor: redraw number " << m_refreshCounter;
-	
+
+	m_epaper->redraw(m_displayArray);
 	/* WIP code display here */
 
 	generateDebugImage();

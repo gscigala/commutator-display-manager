@@ -14,5 +14,6 @@ EPaperFake::~EPaperFake()
 
 void EPaperFake::redraw(Display::Color** displayArray)
 {
+	BOOST_LOG_TRIVIAL(debug) << "EPaperFake: redraw";
 	/* To nothing */
 }

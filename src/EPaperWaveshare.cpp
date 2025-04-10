@@ -43,7 +43,7 @@ void EPaperWaveshare::redraw(Display::Color** displayArray)
 		return;
 	}
 
-	BOOST_LOG_TRIVIAL(debug) << "EPaperWaveshare redraw";
+	BOOST_LOG_TRIVIAL(debug) << "EPaperWaveshare: redraw";
 
 	Paint_NewImage(image, EPD_2IN15G_WIDTH, EPD_2IN15G_HEIGHT, 0, EPD_2IN15G_WHITE);
 	Paint_SetScale(4);
