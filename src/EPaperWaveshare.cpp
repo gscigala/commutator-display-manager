@@ -19,14 +19,19 @@ EPaperWaveshare::EPaperWaveshare(): EPaper()
 
 	EPD_2IN15G_Clear(EPD_2IN15G_WHITE);
 
+	exit();
+
 	BOOST_LOG_TRIVIAL(info) << "EPaperWaveshare: " << "EPaper initialized.";
 }
 
 EPaperWaveshare::~EPaperWaveshare()
 {
+	init();
+
 	EPD_2IN15G_Clear(EPD_2IN15G_WHITE);
-	
+
 	exit();
+
 	BOOST_LOG_TRIVIAL(info) << "EPaperWaveshare: " << " destroyed.";
 }
 
