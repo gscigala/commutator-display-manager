@@ -166,7 +166,9 @@ void WidgetSytadin::redraw()
 			arrowImage = m_arrowBottomRightImage;
 	} else {
 		textColor = Display::Color::Black;
-		backgroundColor = Display::Color::White;	
+		backgroundColor = Display::Color::White;
+
+		arrowImage = nullptr;
 	}
 
 	/* redraw background */
