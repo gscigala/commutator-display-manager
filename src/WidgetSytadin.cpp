@@ -10,14 +10,20 @@ WidgetSytadin::WidgetSytadin(std::shared_ptr<CommutatorSytadin> commutator, std:
 	m_commutator(commutator),
 	m_trafficValueThreshold(5),
 	m_displayLine1RowsNb(35),
-	m_displayLine1OffsetY(6)
+	m_displayLine1OffsetY(6),
+	m_onlyTrafficValueThreshold(40)
 {
 	int cols;
-	
+
 	m_trafficLevel = m_commutator->getTrafficLevel();
 	m_trafficTendency = m_commutator->getTrafficTendency();
 	m_trafficValue = m_commutator->getTrafficValue();
 	BOOST_LOG_TRIVIAL(trace) << getName() << ": trafficLevel = " << m_trafficLevel << ", trafficTendency = " << m_trafficTendency << ", trafficValue = " << m_trafficValue;
+
+	if (m_trafficValue > m_onlyTrafficValueThreshold)
+		m_onlyTrafficValue = false;
+	else
+		m_onlyTrafficValue = true;
 
 	m_commutator->newData.connect(boost::bind(&WidgetSytadin::newDataSlot, this));
 
@@ -89,17 +95,25 @@ void WidgetSytadin::newDataSlot()
 
 	BOOST_LOG_TRIVIAL(debug) << "WidgetSytadin: new data!";
 
-	tmpTrafficLevel = m_commutator->getTrafficLevel();
-	if (tmpTrafficLevel != m_trafficLevel)
-		update = true;
-
-	tmpTrafficTendency = m_commutator->getTrafficTendency();
-	if (tmpTrafficTendency != m_trafficTendency)
-		update = true;
-
 	tmpTrafficValue = m_commutator->getTrafficValue();
 	if (abs(tmpTrafficValue - m_trafficValue) >= m_trafficValueThreshold)
 		update = true;
+
+	if (tmpTrafficValue > m_onlyTrafficValueThreshold) {
+		/* traffic level and tendency only available
+		 * upper traffic threshold */
+		tmpTrafficLevel = m_commutator->getTrafficLevel();
+		if (tmpTrafficLevel != m_trafficLevel)
+			update = true;
+
+		tmpTrafficTendency = m_commutator->getTrafficTendency();
+		if (tmpTrafficTendency != m_trafficTendency)
+			update = true;
+
+		m_onlyTrafficValue = false;
+	} else {
+		m_onlyTrafficValue = true;
+	}
 
 	if (update) {
 		BOOST_LOG_TRIVIAL(debug) << "WidgetSytadin: need update widget";
@@ -118,7 +132,9 @@ void WidgetSytadin::redraw()
 {
 	Display::Color textColor, backgroundColor;
 	Display::Color** arrowImage;
-	const int xCarOffset = 12;
+	const int xCarNotAloneOffset = 12;
+	const int xCarAloneOffset = 33;
+	int xCarOffset;
 	const int xArrowOffset = 92;
 	const int xTrafficOffset1Digit = 39;
 	const int xTrafficOffset2Digit = 29;
@@ -130,23 +146,28 @@ void WidgetSytadin::redraw()
 
 	BOOST_LOG_TRIVIAL(trace) << getName() << ": redraw";
 
-	if (m_trafficLevel == "Unusual") {
-		textColor = Display::Color::Red;
-		backgroundColor = Display::Color::White;
-	} else if (m_trafficLevel == "Exceptional") {
-		textColor = Display::Color::White;
-		backgroundColor = Display::Color::Red;
+	if (!m_onlyTrafficValue) {
+		if (m_trafficLevel == "Unusual") {
+			textColor = Display::Color::Red;
+			backgroundColor = Display::Color::White;
+		} else if (m_trafficLevel == "Exceptional") {
+			textColor = Display::Color::White;
+			backgroundColor = Display::Color::Red;
+		} else {
+			textColor = Display::Color::Black;
+			backgroundColor = Display::Color::White;
+		}
+
+		if (m_trafficTendency == "Increasing")
+			arrowImage = m_arrowTopRightImage;
+		else if (m_trafficTendency == "Stable")
+			arrowImage = m_arrowRightImage;
+		else
+			arrowImage = m_arrowBottomRightImage;
 	} else {
 		textColor = Display::Color::Black;
-		backgroundColor = Display::Color::White;
+		backgroundColor = Display::Color::White;	
 	}
-
-	if (m_trafficTendency == "Increasing")
-		arrowImage = m_arrowTopRightImage;
-	else if (m_trafficTendency == "Stable")
-		arrowImage = m_arrowRightImage;
-	else
-		arrowImage = m_arrowBottomRightImage;
 
 	/* redraw background */
 	for (int i = 0; i < Display::WIDGET_ROWS; ++i) {
@@ -157,11 +178,14 @@ void WidgetSytadin::redraw()
 
 	/* redraw car image */
 	cols = 80;
+	xCarOffset = (m_onlyTrafficValue ? xCarAloneOffset : xCarNotAloneOffset);
 	Display::drawImage(xCarOffset, m_displayLine1OffsetY, m_carImage, m_displayLine1RowsNb, cols, textColor, backgroundColor, m_displayArray);
 
-	/* redraw arrow */
-	cols = 35;
-	Display::drawImage(xArrowOffset, m_displayLine1OffsetY, arrowImage, m_displayLine1RowsNb, cols, textColor, backgroundColor, m_displayArray);
+	if (!m_onlyTrafficValue) {
+		/* redraw arrow */
+		cols = 35;
+		Display::drawImage(xArrowOffset, m_displayLine1OffsetY, arrowImage, m_displayLine1RowsNb, cols, textColor, backgroundColor, m_displayArray);
+	}
 
 	/* redraw traffic value */
 	trafficValueStr = std::to_string(m_trafficValue) + " km";

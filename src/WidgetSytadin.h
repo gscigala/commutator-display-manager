@@ -27,6 +27,9 @@ private:
 	const int m_displayLine1RowsNb;
 	const int m_displayLine1OffsetY;
 
+	const int m_onlyTrafficValueThreshold;
+	bool m_onlyTrafficValue;
+
 	std::string m_trafficLevel;
 	std::string m_trafficTendency;
 	int m_trafficValue;
