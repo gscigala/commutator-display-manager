@@ -56,8 +56,8 @@ std::shared_ptr<Widget> createWidget(const json config, const std::string resDir
 	} else if (widgetType == "Vigicrues") {
 		std::string capability = widgetConfig["capability"];
 		float alert = widgetConfig["thresholds"]["alert"];
-		float blocking = widgetConfig["thresholds"]["blocking"];
-		return std::make_shared<WidgetVigicrues>(commutatorVigicrues, resDirPath,  WidgetVigicrues::stringToCapability(capability), alert, blocking);
+		float flood = widgetConfig["thresholds"]["flood"];
+		return std::make_shared<WidgetVigicrues>(commutatorVigicrues, resDirPath,  WidgetVigicrues::stringToCapability(capability), alert, flood);
 	} else if (widgetType == "IdfmLineReports") {
 		std::string transportMode = widgetConfig["transportMode"];
 		std::string line = widgetConfig["line"];

@@ -6,11 +6,11 @@
 #include <sstream>
 #include <iomanip>
 
-WidgetVigicrues::WidgetVigicrues(std::shared_ptr<CommutatorVigicrues> commutator, std::string resDirPath, Capability capability, float alertThreshold, float blockingThreshold):
+WidgetVigicrues::WidgetVigicrues(std::shared_ptr<CommutatorVigicrues> commutator, std::string resDirPath, Capability capability, float alertThreshold, float floodThreshold):
 	Widget(),
 	m_commutator(commutator),
 	m_alertThreshold(alertThreshold),
-	m_blockingThreshold(blockingThreshold),
+	m_floodThreshold(floodThreshold),
 	m_displayLine1RowsNb(35),
 	m_displayLine1OffsetY(6),
 	m_capability(capability)
@@ -18,10 +18,10 @@ WidgetVigicrues::WidgetVigicrues(std::shared_ptr<CommutatorVigicrues> commutator
 	int cols;
 
 	BOOST_LOG_TRIVIAL(trace) << getName() << ": alert threshold = " << m_alertThreshold;
-	BOOST_LOG_TRIVIAL(trace) << getName() << ": blocking threshold = " << m_blockingThreshold;
+	BOOST_LOG_TRIVIAL(trace) << getName() << ": flood threshold = " << m_floodThreshold;
 
-	if (m_alertThreshold > m_blockingThreshold)
-		throw std::out_of_range("The vigicrues alert level must be lower than blocking threshold!");
+	if (m_alertThreshold > m_floodThreshold)
+		throw std::out_of_range("The vigicrues alert level must be lower than flood threshold!");
 
 	if (m_capability == Capability::FLOW) {
 		m_tendency = m_commutator->getFlowTendency();
@@ -172,7 +172,7 @@ void WidgetVigicrues::redraw()
 	if (m_value < m_alertThreshold) {
 		textColor = Display::Color::Black;
 		backgroundColor = Display::Color::White;
-	} else if (m_alertThreshold < m_value && m_value < m_blockingThreshold) {
+	} else if (m_alertThreshold < m_value && m_value < m_floodThreshold) {
 		textColor = Display::Color::Red;
 		backgroundColor = Display::Color::White;	
 	} else {

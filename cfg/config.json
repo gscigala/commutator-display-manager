@@ -7,8 +7,8 @@
             "type": "Vigicrues",
             "capability": "WATER_LEVEL",
             "thresholds": {
-                "alert": 4.0,
-                "blocking": 4.75
+                "alert": 3.20,
+                "flood": 5.19
             }
         },
         "BOTTOM_LEFT": {

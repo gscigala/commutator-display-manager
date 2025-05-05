@@ -16,7 +16,7 @@ public:
 		UNKNOWN
 	};
 
-	WidgetVigicrues(std::shared_ptr<CommutatorVigicrues> commutator, std::string resDirPath,  Capability capability, float alertThreshold, float blockingThreshold);
+	WidgetVigicrues(std::shared_ptr<CommutatorVigicrues> commutator, std::string resDirPath,  Capability capability, float alertThreshold, float floodThreshold);
 	~WidgetVigicrues();
 
 	std::string getName() const {
@@ -45,7 +45,7 @@ private:
 	const std::shared_ptr<CommutatorVigicrues> m_commutator;
 
 	const float m_alertThreshold;
-	const float m_blockingThreshold;
+	const float m_floodThreshold;
 
 	const int m_displayLine1RowsNb;
 	const int m_displayLine1OffsetY;
