@@ -133,7 +133,7 @@ void WidgetSytadin::redraw()
 	Display::Color textColor, backgroundColor;
 	Display::Color** arrowImage;
 	const int xCarNotAloneOffset = 12;
-	const int xCarAloneOffset = 33;
+	const int xCarAloneOffset = 31;
 	int xCarOffset;
 	const int xArrowOffset = 92;
 	const int xTrafficOffset1Digit = 39;
