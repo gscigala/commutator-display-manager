@@ -14,8 +14,6 @@ public:
 	EPaperWaveshare();
 	~EPaperWaveshare();
 
-	int init();
-	void exit();
 	void redraw(Display::Color** displayArray);
 };
 

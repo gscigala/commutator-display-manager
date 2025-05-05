@@ -12,58 +12,38 @@ EPaperWaveshare::EPaperWaveshare(): EPaper()
 {
 	BOOST_LOG_TRIVIAL(info) << "EPaperWaveshare: " << "EPaper created.";
 
-	if (init() < 0) {
+	if (DEV_Module_Init() != 0) {
 		throw std::runtime_error("Unable to initialize module!");
 		return;
 	}
 
+	EPD_2IN15G_Init();
+
 	EPD_2IN15G_Clear(EPD_2IN15G_WHITE);
 
-	exit();
+	EPD_2IN15G_Sleep();
 
 	BOOST_LOG_TRIVIAL(info) << "EPaperWaveshare: " << "EPaper initialized.";
 }
 
 EPaperWaveshare::~EPaperWaveshare()
 {
-	init();
-
 	EPD_2IN15G_Clear(EPD_2IN15G_WHITE);
 
-	exit();
-
-	BOOST_LOG_TRIVIAL(info) << "EPaperWaveshare: " << " destroyed.";
-}
-
-int EPaperWaveshare::init()
-{
-	if(DEV_Module_Init() != 0) {
-		BOOST_LOG_TRIVIAL(error) << "EPaperWaveshare: " << "Unable to initialize!";
-		return -1;
-	}
-
-	EPD_2IN15G_Init();
-
-	return 0;
-}
-
-void EPaperWaveshare::exit()
-{
 	EPD_2IN15G_Sleep();
 	DEV_Delay_ms(2000); // required by Waveshare
 
-	DEV_Module_Exit();	
+	DEV_Module_Exit();
+
+	BOOST_LOG_TRIVIAL(info) << "EPaperWaveshare: " << " destroyed.";
 }
 
 void EPaperWaveshare::redraw(Display::Color** displayArray)
 {
 	BOOST_LOG_TRIVIAL(debug) << "EPaperWaveshare: redraw";
 
-	if (init() < 0) {
-		throw std::runtime_error("Unable to initialize module!");
-		return;
-	}
-	
+	EPD_2IN15G_Init();
+
 	UBYTE *image;
 	UWORD Imagesize = ((EPD_2IN15G_WIDTH % 4 == 0)? (EPD_2IN15G_WIDTH / 4 ): (EPD_2IN15G_WIDTH / 4 + 1)) * EPD_2IN15G_HEIGHT;
 	if((image = (UBYTE *)malloc(Imagesize)) == NULL) {
@@ -111,5 +91,5 @@ void EPaperWaveshare::redraw(Display::Color** displayArray)
 	free(image);
 	image = NULL;
 
-	exit();
+	EPD_2IN15G_Sleep();
 }
