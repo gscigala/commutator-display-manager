@@ -28,6 +28,8 @@ EPaperWaveshare::EPaperWaveshare(): EPaper()
 
 EPaperWaveshare::~EPaperWaveshare()
 {
+	EPD_2IN15G_Init();
+
 	EPD_2IN15G_Clear(EPD_2IN15G_WHITE);
 
 	EPD_2IN15G_Sleep();
