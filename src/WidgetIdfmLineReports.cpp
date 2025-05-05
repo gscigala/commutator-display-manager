@@ -134,8 +134,8 @@ void WidgetIdfmLineReports::redraw()
 {
 	Display::Color textColor, backgroundColor;
 
-	const int xModeOffsetWithoutIssue = 19;
-	const int xNameOffsetWithoutIssue = 83;
+	const int xModeOffsetWithoutIssue = 25;
+	const int xNameOffsetWithoutIssue = 76;
 	const int xModeOffsetWithIssue = 6;
 	const int xNameOffsetWithIssue = 57;
 	const int xtrafficIssueOffset = 103;
