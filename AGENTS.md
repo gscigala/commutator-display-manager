@@ -6,6 +6,8 @@ Commutator Display Manager affiche des informations de trafic, de transport et d
 
 Les dépendances déclarées sont Boost (Log, Program Options, System), sdbus-c++, pugixml, OpenCV et nlohmann-json. Le binaire utilise D-Bus et le pilote matériel Raspberry Pi/Waveshare. Voir `docs/ai/ARCHITECTURE.md` et `docs/ai/BUILD.md` pour le contexte détaillé.
 
+La documentation de l’écran e-paper Waveshare 2.15inch e-Paper HAT (G) est disponible sur le [wiki Waveshare](https://www.waveshare.com/wiki/2.15inch_e-Paper_HAT+_(G)).
+
 ## Règles C++ et architecture
 
 - Respecter C++20 et le style local ; conserver les interfaces publiques et le comportement existant, sauf demande explicite.
