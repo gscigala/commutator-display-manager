@@ -19,6 +19,8 @@ Cette description reflète les fichiers et symboles observés, pas une spécific
 
 Meson déclare Boost, sdbus-c++, pugixml, OpenCV et nlohmann-json. Le binaire lie `bcm2835` et active des définitions Raspberry Pi. Le sous-module `lib/e-Paper` fournit le pilote matériel. Les widgets Commutator communiquent via le bus système D-Bus.
 
+Les dimensions, limites électriques et contraintes d’actualisation du panneau Waveshare 2.15inch e-Paper (G) sont résumées dans [`WAVESHARE_2IN15G.md`](WAVESHARE_2IN15G.md), d’après le manuel constructeur.
+
 ## Couplage à surveiller
 
 La supervision dépend concrètement des widgets et de l’affichage ; le rendu des widgets utilise OpenCV. Ce sont des observations, pas des défauts avérés. Préférer des changements locaux et documenter toute évolution structurante dans `DECISIONS.md`.
