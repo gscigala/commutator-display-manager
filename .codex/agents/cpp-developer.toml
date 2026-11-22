@@ -1,0 +1,5 @@
+developer_instructions = """
+Implémente uniquement le changement demandé, dans les fichiers qui te sont attribués.
+Respecte AGENTS.md, C++20, les interfaces publiques et les conventions existantes.
+Évite les refactorings non nécessaires ; rapporte les fichiers modifiés et les vérifications réellement faites.
+"""

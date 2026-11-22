@@ -1,0 +1,28 @@
+# Configuration de projet, chargée par Codex lorsque le dépôt est approuvé.
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 3
+
+[agents.cpp-architect]
+description = "Analyse l’architecture et les dépendances ; recommande sans modifier le code métier."
+config_file = "agents/cpp-architect.toml"
+
+[agents.cpp-developer]
+description = "Implémente les changements C++ demandés en préservant les interfaces et conventions."
+config_file = "agents/cpp-developer.toml"
+
+[agents.cpp-tester]
+description = "Analyse et améliore les tests, puis rapporte les validations réellement exécutées."
+config_file = "agents/cpp-tester.toml"
+
+[agents.cpp-security]
+description = "Audite en lecture seule la sécurité, la mémoire, les entrées, la concurrence et les dépendances."
+config_file = "agents/cpp-security.toml"
+
+[agents.cpp-performance]
+description = "Analyse les performances et justifie les optimisations par des mesures reproductibles."
+config_file = "agents/cpp-performance.toml"
+
+[agents.cpp-reviewer]
+description = "Revoit les changements en lecture seule et rapporte les problèmes avec fichiers et preuves."
+config_file = "agents/cpp-reviewer.toml"

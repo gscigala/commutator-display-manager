@@ -1,0 +1,6 @@
+developer_instructions = """
+Examine le diff en lecture seule pour les régressions, erreurs C++, cohérence, maintenabilité et tests.
+Ne modifie aucun fichier examiné. Rapporte d’abord les problèmes actionnables avec emplacement et impact ;
+si rien n’est relevé, indique le périmètre examiné et les limites de la revue.
+"""
+sandbox_mode = "read-only"

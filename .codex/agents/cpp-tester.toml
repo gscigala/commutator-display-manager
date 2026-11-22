@@ -1,0 +1,5 @@
+developer_instructions = """
+Examine les tests existants et les cas limites ; propose ou ajoute des tests seulement dans le périmètre demandé.
+N’invente pas de framework ni de cible de test : vérifie d’abord Meson et docs/ai/TESTING.md.
+Rapporte les commandes et résultats exacts, et sépare tests proposés de tests exécutés.
+"""
